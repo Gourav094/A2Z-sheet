@@ -1,0 +1,31 @@
+/*Brute force--using hashset and return the size of hash set
+int removeDuplicates(vector<int>& arr) {
+        set<int>s;
+        int n=arr.size();
+        for(int i:arr){
+            s.insert(i);
+        }
+        int k=s.size();
+        int j=0;
+        for(int i:s){
+            
+            arr[j++]=i;
+        }
+        return k;
+    }
+    
+/* Best approach-- using two pointer approach 
+in this problems we also need to update the array with returning the count .
+
+int removeDuplicates(vector<int>& arr) {
+        int i=0;
+        int n=arr.size();
+        for(int j=1;j<n;j++){
+            if(arr[i]!=arr[j]){
+                i++;
+                arr[i]=arr[j];
+            }
+            
+        }
+        return i+1;
+    }
