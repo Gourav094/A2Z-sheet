@@ -1,0 +1,25 @@
+// simple approach--
+create another array and default it to 0 then push non zero array to that new array
+
+int n=nums.size();
+        vector<int>ans(n,0);
+        int k=0;
+        for(int i=0;i<n;i++){
+            if(nums[i]!=0){
+                ans[k++]=nums[i];
+            }
+        }
+        for(int i=0;i<n;i++){
+            nums[i]=ans[i];
+        }
+        
+ //Better--two pointer -we are checking zero and swapping sero and non zero 
+ void moveZeroes(vector<int>& nums) {
+        int n=nums.size();
+        for(int i=0,j=0;i<n,j<n;j++){
+            if(nums[j]!=0){
+                swap(nums[i],nums[j]);
+                i++;
+            }
+        }
+    }
