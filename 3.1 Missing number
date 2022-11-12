@@ -1,0 +1,35 @@
+//Using map
+int missingNumber(int a[], int n)
+{
+    int ans=0;
+    unordered_map<int,int>mp;
+    for(int i=0;i<n;i++){
+        mp[a[i]]++;
+    }
+    for(int i=1;i<n+1;i++){
+        if(mp.find(i)==mp.end()){
+            ans=i;
+        }
+    }
+    return ans; 
+}
+
+
+
+//using another array
+int i;
+    int temp[N + 1];
+    for(int i = 0; i <= N; i++){
+      temp[i] = 0;
+    }
+   
+    for(i = 0; i < N; i++){
+      temp[arr[i] - 1] = 1;
+    }
+ 
+ 
+    int ans;
+    for (i = 0; i <= N ; i++) {
+        if (temp[i] == 0)
+            ans = i  + 1;
+    }
