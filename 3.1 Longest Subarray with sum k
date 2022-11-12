@@ -1,0 +1,14 @@
+int lenOfLongSubarr(int A[],  int n, int K) 
+    { 
+        int maxlen=0;
+        for(int i=0;i<n;i++){
+            int sum=0;
+            for(int j=i;j<n;j++){
+                sum+=A[j];
+                if(sum==K){
+                    maxlen=max(maxlen,(j-i+1));
+                }
+            }
+        }
+        return maxlen;
+    }
