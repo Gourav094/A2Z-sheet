@@ -1,0 +1,37 @@
+//firstly ask interviewer about array is sorted or not 
+
+//brute force --
+/*sort the array 
+then check the end of ith with start of jth 
+we are checking ith iteration to all the iteration 
+*/
+
+
+
+
+//optimise approach
+/* 
+Firstly sort the array 
+store the first element of 2d vector in temp and iterate over the vector 
+compare the temp[1] with it[0] if temp[1]>=it[0] then update temp[1] i.e end point of temp
+else store in the ans vector
+
+vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        vector<vector<int>> ans;
+        if(intervals.size()==0){
+            return ans;
+        }
+        sort(intervals.begin(),intervals.end());
+        vector<int>temp=intervals[0];
+        for(auto it:intervals){
+            if(it[0]<=temp[1]){
+                temp[1]=max(it[1],temp[1]);
+            }
+            else{
+                ans.push_back(temp);
+                temp=it;
+            }
+        }
+        ans.push_back(temp);
+        return ans;
+    }
