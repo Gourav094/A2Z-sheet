@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int n=nums.size()-1;
+        int s=0;
+        
+        while(s <= n){
+            int mid=s+(n-s)/2;
+            if(target==nums[mid])return mid;
+            else if(nums[mid] < target){
+                s=mid+1;
+            }
+            else n=mid-1;
+        }
+        return -1;
+    }
+};
