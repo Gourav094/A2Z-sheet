@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+        int s=0;
+        int e=nums.size()-2;
+        while(s <= e){
+            int mid=s+(e - s)/2;
+//check on left if first occurence of number is there or not 
+// ^ operator will check the other instance on both side
+            if(nums[mid] == nums[mid^1]){
+                s=mid+1;
+            }
+//if not there
+            else e=mid-1;
+        }
+        return nums[s];
+    }
+};
+/*
+
+//left index 
+1st instance-->even index
+2nd instace -->odd index
+*/
+why xor operator ??
+it will help to decrease the loop ...we can also use loop 
+
+e.g--> 
+assume 3 xor with 1-- 
+1 1  ---odd index
+  1
+-----
+1 0 --even index
