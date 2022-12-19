@@ -1,0 +1,22 @@
+just write a function of fiirst and last occurence and make a string to check for find first and last occurence
+
+int solve(vector<int>& arr,int e,int target,string a){
+        int mid,ans=-1,s=0;
+        while(s <= e){
+            mid=s+(e - s)/2;
+            if(arr[mid] == target){
+                ans=mid;
+                if(a == "FIRST"? e = mid-1 :s=mid+1);
+            }
+            else if (arr[mid] > target){
+                e=mid-1;
+            }
+            else s=mid+1;
+        }
+        return ans;
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+
+        int e=nums.size()-1;
+        return {solve(nums,e,target,"FIRST"),solve(nums,e,target," ")};
+    }
