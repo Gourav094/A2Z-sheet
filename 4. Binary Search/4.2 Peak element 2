@@ -1,0 +1,39 @@
+Intuition
+apply binary search as in peak element 1
+
+Approach
+Find elements of all direction and compare with current
+if greater return i,j otherwise find maximum of all direction
+
+Complexity
+Time complexity: O(N)
+Space complexity: O(1)
+Code
+class Solution {
+public:
+    vector<int> findPeakGrid(vector<vector<int>>& mat) {
+        int n=mat.size();
+        int m=mat[0].size();
+        int i=0;
+        int j=m-1;
+        while(i>=0 && i<n && j>=0 && j<m){
+    //Find elements in all direction
+            int up=(i-1)<0 ?-1:mat[i-1][j];
+            int down=(i+1)>=n ?-1:mat[i+1][j];
+            int left=(j-1)<0 ?-1:mat[i][j-1];
+            int right=(j+1)>=m ?-1:mat[i][j+1];
+    //Compare current with all eleemnts 
+            if(mat[i][j] > up && mat[i][j] > down && mat[i][j] > left && mat[i][j] > right){
+                return {i,j};
+            }
+    //if not greater move to maximum element of all direction
+            int maxelement=max({up,down,left,right});
+            
+            if(up==maxelement) i--;
+            else if(down==maxelement) i++;
+            else if(left==maxelement) j--;
+            else if(right==maxelement) j++;
+        }
+        return {-1,-1};
+    }
+};
