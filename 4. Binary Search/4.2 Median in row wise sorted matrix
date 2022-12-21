@@ -1,0 +1,46 @@
+Find The min and max element of a matrix 
+find mid=min+max/2;
+find eleemnts less or equal to mid store in count
+if(count <= mid ) low =mid +1      // bcoz there must be more element greater than count so move right side
+else high=mid-1     // bcoz eg--mid=6 count=7 there are 7 elements less or euqal on left side so move left
+
+
+
+class Solution{   
+public:
+    int smaller(vector<int> &row,int md){
+        int s=0;
+        int e=row.size()-1;
+        while( s <= e){
+            int mid=(s+e) >>1;
+            if(row[mid] <= md){
+                s=mid+1;
+                
+            }
+            else e=mid-1;
+        }
+        return s;
+    }
+    
+    
+    int median(vector<vector<int>> &matrix, int R, int C){
+        // code here          
+        int s=0,e=1e9;      //for larger input take h=1e9
+        
+        while(s <= e){
+            int mid=(s+e)>>1;
+            int count=0;
+            for(int i=0;i < R;i++)
+            {
+                
+                count+=smaller(matrix[i],mid);
+            }
+            
+            if(count <= (R*C)/2){
+                s=mid+1;
+            }
+            else e=mid-1;
+        }
+        return s;
+    }
+};
