@@ -1,0 +1,27 @@
+double multiply(int mid,int b){
+	    double ans=1;
+	    for(int i=1;i<=b;i++){
+	        ans=ans*mid;
+	    }
+	   
+	    return ans;
+	}
+	
+	int NthRoot(int n, int m)
+	{
+	    // Code here.
+	    int s=1;
+	    int e=m;
+	    while(s<=e){
+	        int mid=(s+e) >> 1;
+    
+	        if(multiply(mid,n) == m){
+	            return mid;
+	        }
+	        else if(multiply(mid,n) < m){
+	            s=mid+1;
+	        }
+            else e=mid-1;	        
+	    }
+	    return -1;
+	} 
