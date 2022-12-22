@@ -1,0 +1,27 @@
+Complexity:
+Time complexity:O(n)
+Space complexity:O(1)
+Code:
+class Solution {
+public:
+    string removeOuterParentheses(string s) {
+        string ans="";
+        int st=0;
+        for(auto a:s){
+            if(a == '('){
+                if(st > 0){
+                    ans+="(";
+                }
+                st++;
+            }
+            else{
+                if(st > 1){
+                    ans+=")";
+                }
+                st--;
+            }
+
+        }
+        return ans;
+    }
+};
