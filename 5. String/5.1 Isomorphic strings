@@ -1,0 +1,26 @@
+class Solution {
+public:
+    bool solve(string s,string t){
+        unordered_map<char,char> mp;
+        for(auto i=0;i != s.size();i++){
+//check s[i] count in map if not then insert with value t[i]
+
+            if(!mp.count(s[i])){
+                mp.insert({s[i],t[i]});
+            }
+//if present then check the value of character equal to t[i]
+            else if(mp[s[i]] != t[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+    bool isIsomorphic(string s, string t) {
+        if(s.size() != t.size()){
+            return false;
+        }
+//check for both string for the case s="badc" t="baba"
+//in s all the distinct char but t contains similar character
+        return solve(s,t) && solve(t,s);
+    }
+};
