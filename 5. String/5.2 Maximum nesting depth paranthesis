@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maxDepth(string s) {
+        int ans=0,cur=0;
+        for(char&c:s){
+// when c="(" increase cur and update ans to max(ans,cur)
+            if(c == '('){        
+                ans=max(ans,++cur);
+            }
+//but when c=")" decrease cur only 
+            if(c == ')'){
+                cur--;
+            }
+        }
+        return ans;
+    }
+};
