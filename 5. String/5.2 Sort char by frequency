@@ -1,0 +1,25 @@
+class Solution {
+public:
+    string frequencySort(string s) {
+//store frequency of character in map 
+        unordered_map<char,int>mp;
+        for(auto i:s){
+            mp[i]++;
+
+        }
+//use priority queue for find max freq character
+        priority_queue<pair<int,char>> pq;
+        for(auto [a,freq]:mp){
+            pq.push({freq,a});
+        }
+        string ans="";
+        while(!pq.empty()){
+//add all character to ans
+            auto cur=pq.top();
+            pq.pop();
+            ans+=string(cur.first,cur.second);
+//string(cur.first,cur.second) means string(3, 'a') = 'aaa' 
+        }
+        return ans;
+    }
+};
