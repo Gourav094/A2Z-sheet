@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int beautySum(string s) {
+        int n=s.length();
+        int ans=0;
+        for(int i=0;i < n;i++){
+            unordered_map<char,int>mp;
+    //Generate all substring 
+            for(int j=i;j<n;j++){
+    //increase frequency in map
+                mp[s[j]]++;
+    //find min and max frequency every time and add to ans
+                int a=INT_MIN,b=INT_MAX;
+                for(auto i:mp){
+                    a=max(a,i.second);
+                    b=min(b,i.second);
+                }
+                ans+=a-b;
+            }
+        }
+        return ans;
+    }
+};
