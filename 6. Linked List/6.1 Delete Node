@@ -1,0 +1,16 @@
+Node* deleteNode(Node *head,int x)
+{
+    //Your code here
+    Node* temp=head;
+    if(x == 1){
+        return head->next;
+    }
+    int i=1;
+    while(i != x-1 && temp!=NULL){
+        temp=temp->next;
+        i++;
+    }
+    
+    temp->next=temp->next->next;
+    return head;
+}
