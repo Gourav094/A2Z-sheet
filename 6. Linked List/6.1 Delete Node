@@ -14,3 +14,17 @@ Node* deleteNode(Node *head,int x)
     temp->next=temp->next->next;
     return head;
 }
+
+
+
+
+class Solution {
+public:
+    void deleteNode(ListNode* node) {
+//Since node cant be the last node so replace with next node value
+        node->val=node->next->val;
+//delete next node bcoz we dont have access of head->cant delete directly
+        node->next=node->next->next;
+        
+    }
+};
