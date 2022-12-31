@@ -1,0 +1,19 @@
+void addNode(Node *head, int pos, int data)
+{
+   // Your code here
+   Node* tail=head;
+   Node* n=new Node(data);
+
+   int i=0;
+   while(tail != NULL && i < pos){
+       tail=tail->next;
+       i++;
+   }
+   if(tail->next != NULL){
+       tail->next->prev=n;
+       n->next=tail->next;
+   }
+   
+   n->prev=tail;
+   tail->next=n;
+}
