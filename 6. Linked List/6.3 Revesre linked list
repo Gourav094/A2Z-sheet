@@ -14,3 +14,16 @@ public:
         return head;
     }
 };
+// Recursive approach 
+ListNode* reverseList(ListNode* head) {
+        if(!head || !head->next){
+            return head;
+        }
+   //just go to last node 
+        ListNode* node=reverseList(head->next);
+   //just maintain two nodes ---> make contacts of 2nd node to 1st node
+        head->next->next=head;
+    // 1st->next=NULL bcoz it will be the last node
+        head->next=NULL;
+        return node;
+    }
