@@ -1,0 +1,16 @@
+//Iterative approch
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* next;
+        ListNode *cur=head,*prev=NULL;
+        while(cur != NULL){
+            next=cur->next;
+            cur->next=prev;
+            prev=cur;
+            cur=next;
+        }
+        head=prev;
+        return head;
+    }
+};
