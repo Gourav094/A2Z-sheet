@@ -1,0 +1,57 @@
+//use data structure too store linked list eleemnt and check palindrome
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        ListNode* cur=head;
+        stack<int> start;
+        queue<int> end;
+        while(cur != NULL){
+            start.push(cur->val);
+            end.push(cur->val);
+            cur=cur->next;
+        }
+        while( !start.empty() && !end.empty()){
+            if(start.top() != end.front()){
+                return false;
+            }
+            start.pop();
+            end.pop();
+        }
+        return true;
+
+    }
+};
+
+//find middle element and reverse linked list then checkeach element
+
+ListNode* reverse(ListNode *head){
+        if(head == NULL || head->next == NULL){
+            return head;
+        }
+        ListNode* cur=reverse(head->next);
+        head->next->next=head;
+        head->next=NULL;
+        return cur;
+    }
+    bool isPalindrome(ListNode* head) {
+        if(head == NULL && head->next == NULL){
+            return true;
+        }
+        ListNode* fast=head;
+        ListNode* slow=head;
+        while(fast->next != NULL && fast->next->next != NULL ){
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        slow->next=reverse(slow->next);
+        slow=slow->next;
+        ListNode* temp=head;
+        while(slow != NULL){
+            if(temp->val != slow->val){
+                return false;
+            }
+            slow=slow->next;
+            temp=temp->next;
+        }
+        return true;
+    }
