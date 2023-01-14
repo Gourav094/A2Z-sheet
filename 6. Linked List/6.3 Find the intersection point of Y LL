@@ -1,0 +1,87 @@
+Note : equal doesn't means their value its about pointer
+
+Brute Force
+just traverse both the list and compare
+
+Time Complexity- O(n*m)
+Space complexity- O(1)
+code:
+
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode* temp;
+        while(headA){
+            temp=headB;
+            while(temp){
+                if(headA == temp){
+                    return headA;
+                }
+                temp=temp->next;
+            }
+            headA=headA->next;
+        }
+        return NULL;
+    }
+};
+Hashmap solution
+just put one list element in hashmap and find another list node in map
+
+Time complexity -O(m+n)
+Space complexity-O(m)
+code:
+
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        unordered_map<ListNode*,int>mp;
+        while(headA){
+            mp[headA]++;
+            headA=headA->next;
+        }
+        while(headB){
+            if(mp[headB] > 0){
+                return headB;
+            }
+            headB=headB->next;
+        }
+        return NULL;
+    }
+};
+Two pointer Approach
+Just take two dummy list L1 & L2 points to headA & headB
+iterate over both the list until they are equal
+after one iteration if one of them is NULL,
+then they will reach to same level so iterate again
+
+Time complexity:O(m+n)
+Space complexity:O(1)
+Code:
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode* l1=headA;
+        ListNode* l2=headB;
+        while(l1 != l2){
+            if(l1 == NULL){
+                l1=headB;   //point to another head
+            }
+            else l1=l1->next;
+
+            if(l2 == NULL){
+                l2=headA;
+            }
+            else l2=l2->next;
+        }
+        return l1;
+    }
+};
