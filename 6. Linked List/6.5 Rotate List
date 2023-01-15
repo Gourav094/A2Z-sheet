@@ -1,0 +1,61 @@
+Brute Force
+Give TLE at k=2000000000
+Code :
+
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(head == NULL || head->next == NULL){
+            return head;
+        }
+        for(int i=0;i<k;i++){
+            ListNode* tail=head;
+            while(tail->next->next){
+                tail=tail->next;
+            }
+            tail->next->next=head;
+            head=tail->next;
+            tail->next=NULL;
+            
+        }
+        return head;
+    }
+};
+Optimised Approach
+calculate the length of the list.
+Connect the last node to the first node, converting it to a circular linked list.
+Iterate to cut the link of the last node and start a node of k%length of the list rotated list.
+Code
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(head == NULL || head->next == NULL){
+            return head;
+        }
+        ListNode* temp=head;
+        int len=1;
+        while(temp->next){
+            len++;
+            temp=temp->next;
+        }
+        temp->next=head;
+        k=k % len;
+        int end=len-k;
+        while(end--){
+            temp=temp->next;
+        }
+        head=temp->next;
+        temp->next=NULL;
+        return head;
+    }
+};
