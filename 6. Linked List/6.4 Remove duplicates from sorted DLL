@@ -1,0 +1,21 @@
+class Solution
+{
+public:
+    Node * removeDuplicates(struct Node *head)
+    {
+        // Your code here
+        Node* fast=head;
+        Node* slow=head;
+        while(fast != NULL){
+            if(fast->data != slow->data){
+                fast->prev=slow;
+                slow->next=fast;
+                slow=fast;
+            }
+            fast=fast->next;
+        }
+        slow->next=NULL;    //if all elements are duplicate then return only one
+        return head;
+        
+    }
+};
