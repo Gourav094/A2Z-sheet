@@ -1,0 +1,39 @@
+class Solution {
+  public:
+    void deleteAllOccurOfX(struct Node** head, int x) {
+        // Write your code here
+        Node *cur=*head;
+        if(*head == NULL){
+            return;
+        }
+      //For only one node
+        if(cur ->next == NULL && cur->prev==NULL && cur->data == x){
+            cur->data=-1;
+            return;
+            
+        }
+        
+        while(cur != NULL){
+            if(cur->data == x){
+      //if x is at front
+                if(cur->prev ==NULL){
+                    cur->next->prev=NULL;
+                    cur=cur->next;
+                    *head=cur;
+                }
+      //if x is in between
+                else{
+                    cur->prev->next=cur->next;
+       //if x is at end 
+                    if(cur-> next != NULL){
+                        cur->next->prev = cur->prev;
+                    }
+                    cur=cur->next;
+                }
+            }
+            else{
+                cur=cur->next;
+            }
+        }
+    }
+};
