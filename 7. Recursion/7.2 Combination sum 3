@@ -1,0 +1,29 @@
+problem statement :: We have to select k numbers from num 1 to 9 which sums to n 
+Note :: this problem has same approach as of combination sum 2
+solution :: 
+every entry has option to select numebr from ind to 9
+
+class Solution {
+public:
+    vector<vector<int>>ans;
+    void solve(int ind,int target,int k,vector<int>ds){
+        if(k==0 && target == 0){
+            ans.push_back(ds);
+            return;
+        }
+        if(target == 0 || k==0 || ind > 9){
+            return;
+        }
+        if(target >= ind && k > 0){
+            ds.push_back(ind);
+            solve(ind+1,target-ind,k-1,ds);
+            ds.pop_back();
+        }
+        solve(ind+1,target,k,ds);
+    }
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<int>ds;
+        solve(1,n,k,ds);
+        return ans;
+    }
+};
