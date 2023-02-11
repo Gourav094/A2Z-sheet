@@ -1,0 +1,23 @@
+//We have choice to select for every element 
+
+Input:
+N = 2
+arr[] = {2, 3}
+Output:
+0 2 3 5
+
+void solve(vector<int>arr,int op,int i,vector<int>&ans){
+        if(i == arr.size()){
+            ans.push_back(op);
+            return;
+        }
+        solve(arr,op+arr[i],i+1,ans);
+        solve(arr,op,i+1,ans);
+    }
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        // Write Your Code here
+        vector<int>ans;
+        solve(arr,0,0,ans);
+        return ans;
+    }
