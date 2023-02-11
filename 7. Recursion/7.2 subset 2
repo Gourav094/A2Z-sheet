@@ -1,0 +1,55 @@
+Input: 
+nums = [1,2,2] 
+Output: 
+[[],[1],[1,2],[1,2,2],[2],[2,2]]
+
+we have choice for every element to include or not .Take set to return unique element
+vector<vector<int>>ans;
+    set<vector<int>>s;
+    void solve(vector<int> arr,vector<int> op){
+        if(arr.size()==0){
+            if(s.find(op) == s.end()){
+                s.insert(op);
+                ans.push_back(op);
+            }
+            return;
+        }
+        
+        vector<int>op1=op,op2=op;
+        op2.push_back(arr[0]);
+        arr.erase(arr.begin()+0);
+        solve(arr,op1);
+        solve(arr,op2);
+    }
+    vector<vector<int>> printUniqueSubsets(vector<int>& nums) {
+        // Write your code here
+        solve(nums,{});
+        return ans;
+    }
+    
+ METHOD 2:
+ 
+ class Solution {
+
+  public:
+    vector<vector<int>>ans;
+    void solve(int ind,vector<int>& arr,vector<int>& op){
+        
+        ans.push_back(op);
+        for(int i=ind;i<arr.size();i++){
+            if(i != ind && arr[i]==arr[i-1]){
+                continue;
+            }
+            op.push_back(arr[i]);
+            solve(i+1,arr,op);
+            op.pop_back();
+        }
+    }
+    vector<vector<int>> printUniqueSubsets(vector<int>& nums) {
+        // Write your code here
+        sort(nums.begin(),nums.end());
+        vector<int>op;
+        solve(0,nums,op);
+        return ans;
+    }
+};
