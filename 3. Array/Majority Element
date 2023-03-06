@@ -1,0 +1,49 @@
+approach 1:
+use hashmap and store all element .
+Then check occurence for every element in map which has more than n/2.
+code:
+
+int majorityElement(vector<int>& a) {
+        int ans=-1;
+        int size=a.size();
+        unordered_map<int,int>mp;
+        for(int i=0;i<size;i++){
+            mp[a[i]]++;
+        }
+        int mid=a.size()/2;
+        for(auto it=mp.begin();it!=mp.end();it++){
+            if(it->second > mid){
+                ans=it->first;
+                return ans;
+            }
+        }
+        return -1;
+    }
+Optimised approach:
+Morre voting algorithm :
+
+Initialize 2 variables:
+--> Count – for tracking the count of element
+--> Element – for which element we are counting
+Traverse through nums array.
+If Count is 0 then initialize the current integer as Element
+If the traversing integer of array and Element are same increase Count by 1
+If they are different decrease Count by 1
+The integer present in Element is the result we asre expecting
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int count=0;
+        int element=0;
+        for(int num:nums){
+            if(count == 0){
+                element=num;
+            }
+            if(num == element){
+                count++;
+            }
+            else count--;
+        }
+        return element;
+    }
+};
