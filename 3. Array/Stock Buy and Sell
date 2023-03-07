@@ -1,0 +1,45 @@
+Brute force:
+Intuition: We can simply use 2 loops and track every transaction 
+and maintain a variable maxPro to contain the max value among all transactions.
+code:
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int sum=0;
+        for(int i=0;i<prices.size();i++){
+            for(int j=i+1;j<prices.size();j++){
+                if(prices[i] < prices[j]){
+                    sum=max(sum,prices[j]-prices[i]);
+                }
+            }
+        }
+        return sum;
+    }
+};
+
+optimised approach:
+Intuition: We will linearly travel the array. We can maintain a minimum from the start of the array and compare it with every element of the array, if it is greater than the minimum then take the difference and maintain it in max, otherwise update the minimum.
+
+Approach:
+
+Create a variable maxPro and store 0 initially.
+Create a variable minPrice and store some larger value(ex: MAX_VALUE) value initially.
+Run a for loop from 0 to n.
+Update the minPrice if it is greater than the current element of the array
+Take the difference of the minPrice with the current element of the array and compare and maintain it in maxPro.
+Return the maxPro.
+
+code:
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int minimum=INT_MAX;
+        int maximum=0;
+        for(int i=0;i<prices.size();i++){
+            minimum=min(minimum,prices[i]);
+            maximum=max(maximum,prices[i]-minimum);
+
+        }
+        return maximum;
+    }
+};
