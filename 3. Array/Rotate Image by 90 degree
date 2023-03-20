@@ -1,0 +1,58 @@
+---------Brute force:
+
+Approach: Take another dummy matrix of n*n, and then take the first row of the matrix and put it in the last column of the dummy matrix, 
+take the second row of the matrix, and put it in the second last column of the matrix and so.
+
+code:
+vector < vector < int >> rotate(vector < vector < int >> & matrix) {
+  int n = matrix.size();
+  vector < vector < int >> rotated(n, vector < int > (n, 0));
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      rotated[j][n - i - 1] = matrix[i][j];
+    }
+  }
+  return rotated;
+}
+
+--------approach 2 :
+traverse the matrix and swap four corner elemnts and repeat for whole matrix.
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& m) {
+	int n = size(m), tmp;
+	for(int i = 0; i < n / 2; i++){
+		for(int j = i; j < n - 1 - i; j++){
+			tmp = m[i][j];
+			m[i][j] = m[n - 1 - j][i];
+			m[n - 1 - j][i] = m[n - 1 - i][n - 1 - j];
+			m[n - 1 - i][n - 1 - j] = m[j][n - 1 - i];
+			m[j][n - 1 - i] = tmp;
+		}            
+	}
+}
+};
+
+---------approach 3:
+
+Step 1: Transpose the matrix. (transposing means changing columns to rows and rows to columns)
+
+Step 2: Reverse each row of the matrix.
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+       
+        for(int i=0;i<n;i++){
+            for(int j=0;j<i;j++){
+                swap(matrix[i][j],matrix[j][i]);
+            }
+        }
+        for(int i=0;i<n;i++){
+            reverse(matrix[i].begin(),matrix[i].end());
+        }
+    }
+};
+
