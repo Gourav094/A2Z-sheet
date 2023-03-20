@@ -1,0 +1,73 @@
+Brute Force-->
+Traverse in the matrix and if we encounters a zero then make -1 to whole row and col
+Traverse again in the Matrix and if matrix[i][j] == -1 then make it 0.
+Better approch
+Take two extra array...one for row and other for column.
+if any element is zero in matrix then mark in the extra array.
+now, if there is zero in extra array mark in the original array as well.
+
+Code
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+        int m=matrix[0].size();
+        vector<int>row(n,-1);
+        vector<int>col(m,-1);
+        for(int i=0;i < n;i++){
+            for(int j=0;j < m;j++){
+                if(matrix[i][j]==0){
+                    row[i]=0;
+                    col[j]=0;
+                }
+            }
+        }
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(row[i] == 0 || col[j] == 0){
+                    matrix[i][j]=0;
+                }
+            }
+        }
+    }
+};
+Optimal Approach:
+Take first row and col to indicate there is a zero in the row and col.
+take col to check the zero in first row  and matrix[0][0] handle first row.
+Now traverse from i=0,j=1 if zero then make zero to first row and col.
+Traverse from the Back ..and check to 1st row and col if zero then make the element as zero.
+and for row 1 check col=0 or not .
+
+Code
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+        int m=matrix[0].size();
+        int col=1;
+        for(int i=0;i < n;i++){
+    //if there is zero in frist col then  col=0
+            if(matrix[i][0] == 0){
+              col=0;
+            }
+            for(int j=1;j < m;j++){
+                
+                if(matrix[i][j]==0){
+                    matrix[i][0]=0;
+                    matrix[0][j]=0;
+                }
+            }
+        }
+        for(int i=n-1;i >= 0;i--){
+            for(int j=m-1;j >= 1;j--){
+                if(matrix[i][0]==0 || matrix[0][j]==0){
+                    matrix[i][j]=0;
+                }
+                
+            }
+            if(col == 0){
+                matrix[i][0]=0;
+            }
+        }
+    }
+};
