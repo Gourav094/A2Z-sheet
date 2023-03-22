@@ -1,0 +1,18 @@
+void create_tree(node* root, vector<int> &vec){
+        //Your code goes here
+        queue<node*>q;
+        q.push(root);
+        int n=vec.size();
+        for(int i=1;i<n;i=i+2){
+            node*front=q.front();
+            q.pop();
+            
+            node*left=newNode(vec[i]);
+            front->left=left;
+            q.push(left);
+            
+            node* right=newNode(vec[i+1]);
+            front->right=right;
+            q.push(right);
+        }
+    }
