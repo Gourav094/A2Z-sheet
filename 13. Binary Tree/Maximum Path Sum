@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int solve(TreeNode* root,int & ans){
+        if(!root){
+            return 0;
+        }
+        int LH=max(solve(root->left,ans),0);//max is finding becoz there can we -ve node
+        int RH=max(solve(root->right,ans),0);
+        ans=max(ans,root->val+LH+RH);   //This will give the ans
+        
+        return root->val+max(RH,LH);    //This will select the longest path 
+    }
+    int maxPathSum(TreeNode* root) {
+        int ans=INT_MIN;       
+        solve(root,ans);
+        return ans;
+    }
+};
