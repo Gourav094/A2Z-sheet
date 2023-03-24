@@ -1,0 +1,73 @@
+easy to solve ==> divide this uestion into steps
+1.figure our left node
+2.bottom node
+3.right node
+4. function for checking leaf node or not
+
+class Solution {
+public:
+    bool isLeaf(Node*root){
+        return (!root->left && !root->right);
+    }
+
+    void left(Node* root,vector<int>& ans){
+        Node*cur=root->left;
+        while(cur){
+            if(!isLeaf(cur)){
+                ans.push_back(cur->data);
+            }
+            if(cur->left){
+                cur=cur->left;
+            }
+            else{
+                cur=cur->right;
+            }
+        }
+    }
+    void leaf(Node* root,vector<int>&ans){
+        if(isLeaf(root)){
+            ans.push_back(root->data);
+            return;
+        }
+        if(root->left){
+            leaf(root->left,ans);
+        }
+        if(root->right){
+            leaf(root->right,ans);
+        }
+    }
+    void right(Node* root,vector<int>&ans){
+        Node* cur=root->right;
+        vector<int>temp;
+        while(cur){
+            if(!isLeaf(cur)){
+                temp.push_back(cur->data);
+            }
+            if(cur->right){
+                cur=cur->right;   
+            }
+            else{
+                cur=cur->left;
+            }
+        }
+        for(int i=temp.size()-1;i>=0;i--){
+            ans.push_back(temp[i]);
+        }
+    }
+    
+    vector <int> boundary(Node *root)
+    {
+        //Your code here
+        vector<int>ans;
+        if(!root){
+            return ans;
+        }
+        if(!isLeaf(root)){
+            ans.push_back(root->data);
+        }
+        left(root,ans);
+        leaf(root,ans);
+        right(root,ans);
+        return ans;
+    }
+};
