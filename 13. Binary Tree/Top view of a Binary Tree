@@ -15,7 +15,7 @@ vector<int> topView(Node *root)
             q.pop();
             Node* node=it.first;
             int x=it.second;
-            if(mp.find(x) == mp.end()){
+            if(mp.find(x) == mp.end()){     //imp--> this condition push only front values
                 mp[x]=node->data;
             }
             if(node->left){
