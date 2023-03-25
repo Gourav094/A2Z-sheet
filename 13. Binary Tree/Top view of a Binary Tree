@@ -1,0 +1,32 @@
+Take a queue to mark the verticals to every node 
+take a map data structure to store the eleemnts according to their verticals
+if left exists then add -1 to vertical else add 1 
+after all the procedure add map eleemts into vector
+
+vector<int> topView(Node *root)
+    {
+        //Your code here
+        vector<int>ans;
+        queue<pair<Node*,int>>q;
+        q.push({root,0});
+        map<int,int>mp;
+        while(!q.empty()){
+            auto it=q.front();
+            q.pop();
+            Node* node=it.first;
+            int x=it.second;
+            if(mp.find(x) == mp.end()){
+                mp[x]=node->data;
+            }
+            if(node->left){
+                q.push({node->left,x-1});
+            }
+            if(node->right){
+                q.push({node->right,x+1});
+            }
+        }
+        for(auto node:mp){
+            ans.push_back(node.second);
+        }
+        return ans;
+    }
