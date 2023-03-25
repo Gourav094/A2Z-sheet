@@ -1,0 +1,33 @@
+// pre order ==> root left right
+void leftsolve(Node* root,int level,vector<int>& ans){
+    if(root==NULL){
+        return;
+    }
+   //since size of vector increasing when we add element so if level is equal only then push ==> so only left / right will push
+    if(ans.size() == level){
+        ans.push_back(root->data);
+    }
+    leftsolve(root->left,level+1,ans);
+    leftsolve(root->right,level+1,ans);
+    
+}
+
+// for right view ==> reverse pre order ==> root right left
+void rightsolve(Node* root,int level,vector<int>& ans){
+    if(root==NULL){
+        return;
+    }
+    if(ans.size() == level){
+        ans.push_back(root->data);
+    }
+    rightsolve(root->right,level+1,ans);
+    rightsolve(root->left,level+1,ans);
+    
+}
+vector<int> leftView(Node *root)
+{
+   // Your code here
+   vector<int>ans;
+   leftsolve(root,0,ans);
+   return ans;
+}
