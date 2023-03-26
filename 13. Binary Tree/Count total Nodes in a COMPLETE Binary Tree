@@ -1,0 +1,64 @@
+Brute Force
+T.c--> O(n)
+S.C--> O(log(n))
+
+Code
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        if(!root)
+        {
+            return 0;
+        }
+        return 1+countNodes(root->left) +countNodes(root->right);
+    }
+};
+Optimised code:
+
+Find left and right heigh.
+if LH==RH ==> no of nodes are 2*n-1
+otherwise call left child and right child ...
+again repeating all the steps
+
+T.c--> O((log)*2)
+S.C--> O(log(n))
+
+int leftheight(Node* root){
+        int count=0;
+        while(!root){
+            count++;
+            root=root->left;
+        }
+        return count;
+    }
+    int rightheight(Node* root){
+        int count=0;
+        while(root){
+            count++;
+            root=root->right;
+        }
+        return count;
+    }
+    int countNodes(Node* root) {
+        // Write your code here
+        if(!root){
+            return 0;
+        }
+        int Lh=leftheight(root);
+        int Rh=rightheight(root);
+        if(Lh == Rh){
+            return (1<<Lh) -1;
+        }
+        return 1+countNodes(root->left)+countNodes(root->right);
+    }
