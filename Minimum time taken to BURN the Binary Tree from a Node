@@ -1,0 +1,64 @@
+Node* markparent(Node* root,int target,map<Node*,Node* >&p){
+        queue<Node*>q;
+        q.push(root);
+        Node* res;
+        
+        while(!q.empty()){
+            Node* front=q.front();
+            q.pop();
+            if(front->data == target){
+                res=front;
+            }
+            if(front->left){
+                p[front->left]=front;
+                q.push(front->left);
+            }
+            if(front->right){
+                p[front->right]=front;
+                q.push(front->right);
+            }
+        }
+        return res;
+    }
+    int maxtime(map<Node*,Node*>p,Node* root){
+        queue<Node*>q;
+        q.push(root);
+        int ans=0;
+        map<Node* ,bool>visited;
+        visited[root]=true;
+        while(!q.empty()){
+            int size=q.size();
+            int f=0;
+            for(int i=0;i<size;i++){
+                Node* front=q.front();
+                q.pop();
+                if(front->left && !visited[front->left]){
+                    f=1;
+                    q.push(front->left);
+                    visited[front->left]=true;
+                }
+                if(front->right && !visited[front->right]){
+                    f=1;
+                    q.push(front->right);
+                    visited[front->right]=true;
+                }
+                if(p[front] && !visited[p[front]]){
+                    f=1;
+                    q.push(p[front]);
+                    visited[p[front]]=true;
+                }
+            }
+            if(f){
+                ans++;
+            }
+        }
+        return ans;
+    }
+    int minTime(Node* root, int target) 
+    {
+        // Your code goes here
+        map<Node* ,Node*>p;
+        Node* targetnode=markparent(root,target,p);
+        int ans=maxtime(p,targetnode);
+        return ans;
+    }
