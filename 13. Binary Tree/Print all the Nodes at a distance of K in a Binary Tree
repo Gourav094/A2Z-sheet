@@ -1,0 +1,79 @@
+Take a map to store all the visited nodes and take a map to store all the parents so that can check on parents also.
+take a variable to count the k times
+Take a queue and store the target 
+now check in all three direction lft right root that are not null and not visited ...then push in the queue
+then repeat step for k times 
+after traversing all unvisited node push remaining queue in the vector 
+
+Complexity:
+Time complexity:O(n)
+Space complexity:O(n)
+Code:
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void markparent(TreeNode* root,TreeNode* target,map<TreeNode*,TreeNode* >&p){
+        queue<TreeNode*>q;
+        q.push(root);
+        while(!q.empty()){
+            TreeNode* front=q.front();
+            q.pop();
+            if(front->left){
+                p[front->left]=front;
+                q.push(front->left);
+            }
+            if(front->right){
+                p[front->right]=front;
+                q.push(front->right);
+            }
+        }
+    }
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        queue<TreeNode*>q;
+        vector<int>ans;
+        
+        q.push(target);
+        map<TreeNode* , bool>visited;
+        map<TreeNode*,TreeNode*>p;
+        markparent(root,target,p);
+        visited[target]=true;
+        int cur=0;
+        while(!q.empty()){
+            int size=q.size();
+            if(cur++ == k){
+                break;
+            }
+            for(int i=0;i<size;i++){
+                TreeNode* front=q.front();
+                q.pop();
+                if(front->left && !visited[front->left]){
+                    q.push(front->left);
+                    visited[front->left]=true;
+                }
+                if(front->right && !visited[front->right]){
+                    q.push(front->right);
+                    visited[front->right]=true;
+                }
+                if(p[front] && !visited[p[front]]){
+                    q.push(p[front]);
+                    visited[p[front]]=true;
+                }
+                
+            }
+        }
+        while(!q.empty()){
+            TreeNode* front=q.front();
+            q.pop();
+            ans.push_back(front->val);
+        }
+        return ans;
+    }
+};
