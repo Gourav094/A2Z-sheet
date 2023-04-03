@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int i=0,j=0;
+//store substring to find longest 
+        map<char,int>mp;
+        int ans=0;
+        while(j < s.length()){
+            mp[s[j]]++;
+// find answer if there is no repeating character
+            if(mp.size() == j-i+1){
+                ans=max(ans,j-i+1);
+                j++;
+            }
+//slide the window
+            else if(mp.size() < j-i+1){
+                while(mp.size() < j-i+1){
+                    mp[s[i]]--;
+                    if(mp[s[i]] == 0){
+                        mp.erase(s[i]);
+                    }
+                    i++;
+                }
+                j++;
+            }
+        }
+        return ans;
+    }
+};
