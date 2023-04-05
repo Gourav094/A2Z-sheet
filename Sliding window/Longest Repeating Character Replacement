@@ -1,0 +1,26 @@
+Since we have to make longest repeating character after changing k elemeents==>
+to replace the k element in a window ==> we need window size and maximum occurring character
+now lets say window size is 5 and maximum occ is 3 means we need to change 2 elements if its less than k then can count but if more than k we will just move the window 
+then find window size
+
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        unordered_map<int,int>mp;
+        int i=0,j=0;
+        int occurence=0;
+        int ans=0;
+        while(j < s.length()){
+            mp[s[j]]++;
+            occurence=max(occurence,mp[s[j]]);
+            int window=j-i+1;
+            if(window - occurence > k){
+                mp[s[i]]--;
+                i++;
+            }
+            ans=max(ans,j-i+1);
+            j++;
+        }
+        return ans;
+    }
+};
