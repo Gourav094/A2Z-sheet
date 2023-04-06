@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<int> insert(vector<int>& nums,int top){
+        if(nums.size() == 0 || nums[nums.size()-1] < top){
+            nums.push_back(top);
+            return nums;
+
+        }
+        int last=nums[nums.size()-1];
+        nums.pop_back();
+        insert(nums,top);
+        nums.push_back(last);
+        return nums;
+    }
+    vector<int> sortArray(vector<int>& nums) {
+        if(nums.size() == 1){
+            return nums;
+        }
+        int last=nums[nums.size()-1];
+        nums.pop_back();
+        sortArray(nums);
+        return insert(nums,last);
+    }
+};
