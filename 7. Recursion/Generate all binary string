@@ -1,0 +1,23 @@
+gfg --> https://bit.ly/3sI8I9W
+
+Since we need to generate string so that no two one can come together 
+so  check if last digit is 0 then call function only for one otherwise call for 0 and 1
+
+void solve(int num,string output,int ind){
+        if(num == ind){
+            cout<<output<<" ";
+            return;
+        }
+        if(ind != 0 && output[ind-1]=='1'){
+            solve(num,output+'0',ind+1);
+        }
+        else{
+            solve(num,output+'0',ind+1);
+            solve(num,output+'1',ind+1);
+        }
+    }
+    void generateBinaryStrings(int num){
+        //Write your code
+        solve(num,"",0);
+        return;
+    }
