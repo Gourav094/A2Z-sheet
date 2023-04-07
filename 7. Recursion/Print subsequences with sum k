@@ -1,0 +1,23 @@
+arr[]={1,2,1}
+int n=3;
+int s=2;
+we have to generate that subsequemces which sums upto s 
+
+void solve(int arr[],int n,int s,int sum,int ind,vector<int> op){
+    if(ind == n){
+        
+        if(sum == s){
+            for(int i=0;i<op.size();i++){
+                cout<<op[i]<<" ";
+            }
+            return;
+        }
+    }
+    op.push_back(arr[ind]);
+    sum+=arr[ind];
+    
+    solve(arr,n,s,sum,ind+1,op);
+    s-=arr[ind];
+    op.pop_back();
+    solve(arr,n,s,sum,ind+1,op);
+}
