@@ -1,0 +1,26 @@
+class Solution{
+    public:
+    bool solve(int ind,int s,vector<int>arr,int n,int sum){
+        if(s > sum ){
+            return false;
+        }
+        if(sum == s){
+            return true;
+        }
+        if(ind == n){
+            if(sum == s){
+                return true;
+            }else return false;
+        }
+        s+=arr[ind];
+    
+        if(solve(ind+1,s,arr,n,sum))return true;
+        s-=arr[ind];
+        if(solve(ind+1,s,arr,n,sum))return true;
+        return false;
+    }
+    bool checkSubsequenceSum(int n, vector<int>& arr, int k) {
+        // Code here
+        return solve(0,0,arr,n,k);
+    }
+};
