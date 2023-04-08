@@ -1,0 +1,21 @@
+void solve(int &ans,int k,int index,vector<int>num){
+        if(num.size() == 1){
+            ans=num[0];
+            return;
+        }
+        index=(index+k)%num.size();
+        num.erase(num.begin()+index);
+        solve(ans,k,index,num);
+    }
+    int josephus(int n, int k)
+    {
+       //Your code here
+       vector<int>num;
+       for(int i=1;i<=n;i++){
+           num.push_back(i);
+       }
+       int ans=0;
+       solve(ans,k-1,0,num);
+        return ans;
+        
+    }
