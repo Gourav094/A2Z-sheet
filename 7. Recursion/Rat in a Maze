@@ -1,0 +1,47 @@
+
+class Solution{
+    public:
+    bool issafe(int x,int y,int n,vector<vector<int>> &arr,vector<vector<bool>>&vis){
+        if((x>=0 && x<n) && (y>=0 && y<n) && arr[x][y] == 1 && vis[x][y]!=1){
+            return true;
+        }
+        return false;
+    }
+    void solve(vector<vector<int>> &arr,vector<vector<bool>>&vis,int x,int y,int n,string path,vector<string>&ans){
+        if(x == n-1 && y == n-1){
+            ans.push_back(path);
+            return;
+        }
+        // mark visited to the node
+        vis[x][y]=1;
+        //for downward
+        if(issafe(x+1,y,n,arr,vis)){
+            solve(arr,vis,x+1,y,n,path+"D",ans);
+        }
+        //for left
+        if(issafe(x,y-1,n,arr,vis)){
+            solve(arr,vis,x,y-1,n,path+"L",ans);
+        }
+        //for right
+        if(issafe(x,y+1,n,arr,vis)){
+            solve(arr,vis,x,y+1,n,path+"R",ans);
+        }
+        //for up
+        if(issafe(x-1,y,n,arr,vis)){
+            solve(arr,vis,x-1,y,n,path+"U",ans);
+        }
+        //mark unvisited while backtracking
+        vis[x][y]=0;
+    }
+    vector<string> findPath(vector<vector<int>> &m, int n) {
+        // Your code goes here
+        vector<string>ans;
+        vector<vector<bool>>vis(n,vector<bool>(n,0));
+        if(m[0][0] == 0){
+            return ans;
+        }
+        string path="";
+        solve(m,vis,0,0,n,path,ans);
+        return ans;
+    }
+};
