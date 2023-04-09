@@ -1,0 +1,76 @@
+for different just change the anwer function acction to output pattern:
+explain:
+check in 1st col to every row rest recursion will handle
+check position is safe or not then place thhe queen
+
+bool issafe(vector<vector<int>>&board,int n,int col,int row){
+        int x=row;
+        int y=col;
+   //check for column 
+        while(y >= 0){
+            if(board[x][y] == 1){
+                return false;
+            }
+            y--;
+        }
+        x=row;
+        y=col;
+   //diagnol check
+        while(x >=0  && y >=0){
+            if(board[x][y] == 1){
+                return false;   
+            }
+            x--;
+            y--;
+        }
+        x=row;
+        y=col;
+   //diagonal check
+        while(x < n && y >=0){
+            if(board[x][y] == 1){
+                return false;   
+            }
+            x++;
+            y--;
+        }
+        return true;
+    }
+    //insert answer in vector
+    void answer(vector<vector<int>>&board,vector<vector<int>>&ans,int n){
+        vector<int>temp;
+        for(int col=0;col < n;col++){
+            for(int row=0;row < n;row++){
+                if(board[row][col] == 1){
+                    
+                    temp.push_back(row+1);
+                }
+            }
+        }
+        ans.push_back(temp);
+    }
+    
+    void solve(vector<vector<int>> &board,vector<vector<int>> &ans,int col,int n){
+        if(col == n){
+            answer(board,ans,n);
+            return;
+        }
+    //check in all row in 1st column
+        for(int row=0;row < n;row++){
+        //check queen placing is safe or not
+            if(issafe(board,n,col,row)){
+            //place the queen
+                board[row][col]=1;
+                solve(board,ans,col+1,n);
+            //backtrack the queen after coming from recursion and queen placing not possible
+                board[row][col]=0;
+            }
+        }
+    }
+    
+    vector<vector<int>> nQueen(int n) {
+        // code here
+        vector<vector<int>> ans;
+        vector<vector<int>> board(n, vector<int>(n,0));
+        solve(board,ans,0,n);
+        return ans;
+    }
