@@ -31,3 +31,28 @@ assume 3 xor with 1--
   1
 -----
 1 0 --even index
+
+
+
+--------another solution--
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+        int s=0;
+        int e=nums.size()-1;
+        while(s < e){
+            int mid=s+(e-s)/2;
+            int num=0;
+            if(mid % 2 == 0){
+                num=mid+1;
+            }
+            else num=mid-1;
+            
+            if(nums[mid] == nums[num]){
+                s=mid+1;
+            }
+            else e=mid;
+        }
+        return nums[s];
+    }
+};
