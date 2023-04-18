@@ -1,0 +1,48 @@
+int Floor(int arr[],int n,int x){
+    int s=0;
+    int e=n-1;
+    int ans=-1;
+    while(s <= e){
+        int mid=s+(e-s)/2;
+        if(arr[mid] == x){
+            return arr[mid];
+            
+        }
+        else if(arr[mid] < x){
+            ans=arr[mid];
+            s=mid+1;
+        }
+        else e=mid-1;
+    }
+    return ans;
+}
+int Ceil(int arr[],int n,int x){
+    int s=0;
+    int e=n-1;
+    int ans=-1;
+    while(s <= e){
+        int mid=s+(e-s)/2;
+        if(arr[mid] == x){
+            return arr[mid];
+            
+        }
+        else if(arr[mid] < x){
+            
+            s=mid+1;
+        }
+        else{
+            ans=arr[mid];
+            e=mid-1;
+        }
+    }
+    return ans;
+}
+
+pair<int, int> getFloorAndCeil(int arr[], int n, int x) {
+    // code here
+    sort(arr,arr+n);
+    pair<int,int>ans;
+    ans.first=Floor(arr,n,x);
+    ans.second=Ceil(arr,n,x);
+    return ans;
+}
