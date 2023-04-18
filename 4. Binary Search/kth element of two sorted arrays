@@ -1,0 +1,28 @@
+We can part it in such a way that our kth element will be at the end of the left half array.
+Let’s make some observations. The left portion of the array is made of some elements of both array1 and array2.
+We can see that all elements of the right half of the array are always larger than the left ones.
+So, with help of binary search, we will divide arrays into partitions with keeping k elements in the left half. 
+We have to keep in mind that l1 <= r2 and l2 <= r1. Why so? This ensures that left-half elements are always lesser than right elements.
+
+
+Input:
+arr1[] = {2, 3, 6, 7, 9}
+arr2[] = {1, 4, 8, 10}
+k = 5
+Output:
+6
+Explanation:
+The final sorted array would be -
+1, 2, 3, 4, 6, 7, 8, 9, 10
+The 5th element of this array is 6.
+
+Input:
+arr1[] = {2, 3, 6, 7, 9}
+arr2[] = {1, 4, 8, 10}
+k = 5
+Output:
+6
+Explanation:
+The final sorted array would be -
+1, 2, 3, 4, 6, 7, 8, 9, 10
+The 5th element of this array is 6.
