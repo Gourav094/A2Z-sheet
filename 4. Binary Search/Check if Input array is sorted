@@ -1,0 +1,20 @@
+class Solution {
+  public:
+    bool solve(int arr[],int n,int s,int e){
+        if(s > e){
+            return true;
+        }
+        int mid=(s+e) >> 1;
+        if((mid-1 > 0) && arr[mid] < arr[mid-1]){
+            return false;
+        }
+        if((mid+1 < n) && arr[mid] > arr[mid + 1]){
+            return false;
+        }
+        return solve(arr,n,s,mid-1) && solve(arr,n,mid+1,e);
+    }
+    bool arraySortedOrNot(int arr[], int n) {
+        // code here
+        return solve(arr,n,0,n-1);
+    }
+};
