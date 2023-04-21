@@ -1,0 +1,20 @@
+Recursive way
+
+class Solution {
+public:
+    bool solve(string s,unordered_set<string>& set,int ind){
+        if(ind == s.size()){
+            return true;
+        }
+        for(int i=ind;i<s.size();i++){
+            if(set.count(s.substr(ind,i+1-ind)) && solve(s,set,i+1)){
+                return true;
+            }
+        }
+        return false;
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> set(wordDict.begin(), wordDict.end());
+        return solve(s,set,0);
+    }
+};
