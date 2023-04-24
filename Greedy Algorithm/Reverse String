@@ -1,0 +1,23 @@
+S = i.like.this.program.very.much
+Output: much.very.program.this.like.i
+
+
+start from  last and check if . thn put in ans otherwise store in temp
+string reverseWords(string s) 
+    { 
+        // code here 
+        string ans="";
+        string temp="";
+        for(int i=s.length();i >= 0;i--){
+            if(s[i] == '.'){
+                reverse(temp.begin(),temp.end());
+                ans+=temp;
+                ans+='.';
+                temp="";
+            }
+            else temp.push_back(s[i]);
+        }
+        reverse(temp.begin(),temp.end());
+        ans+=temp;
+        return ans;
+    } 
