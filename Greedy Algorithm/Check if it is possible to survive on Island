@@ -1,0 +1,31 @@
+Problem-
+N – The maximum unit of food you can buy each day.
+S – Number of days you are required to survive.
+M – Unit of food required each day to survive.
+Find she can survive on the island or not .she cant buy food on sunday
+Input: S = 10, N = 16, M = 2
+Output: 2
+
+Explanation:
+Since we can buy M food and suvive for S day then total we need M*S food .
+in one day we can buy N food then check for remainder 
+dry run this you will get to know 
+class Solution{
+public:
+    int minimumDays(int S, int N, int M){
+        // code here
+        int sun=S/7;
+        int day=S-sun;
+        int total=S*M;
+        int ans=0;
+        if(total % N == 0){
+            ans=total/N;
+        }
+        else ans=total/N + 1;
+        
+        if(ans <= day){
+            return ans;
+        }
+        else return -1;
+    }
+};
