@@ -1,0 +1,17 @@
+it will give TLE becauese its a question of DP
+
+
+int minCoins(int coins[], int n, int V) 
+	{ 
+	    // Your code goes here
+	    sort(coins,coins+n);
+	    int ans=0;
+	    for(int i=n-1;i >= 0;i--){
+	        while(V >= coins[i]){
+	            V-=coins[i];
+	            ans++;
+	        }
+	        
+	    }
+	    return ans;
+	} 
