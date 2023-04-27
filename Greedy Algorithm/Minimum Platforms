@@ -1,0 +1,38 @@
+Input: n = 6 
+arr[] = {0900, 0940, 0950, 1100, 1500, 1800}
+dep[] = {0910, 1200, 1120, 1130, 1900, 2000}
+Output: 3
+Explanation:
+intution:
+in whole day we can departure a train if its time is less than arival time 
+if arrival time is more we need one more plpatform to hold the train
+fist sort the both array
+now compare arrival time and depature time and increase platform count if arrival time is greater otehrwise reduce
+
+
+int findPlatform(int arr[], int dep[], int n)
+    {
+    	// Your code here2
+      //sort both arrays 
+    	sort(arr,arr+n);
+    	sort(dep,dep+n);
+      //we have one platform in starting 
+    	int ans=1,count=1;
+    	int i=1,j=0;
+    	
+    	while(i < n && j < n){
+  //if arrival time is less than departure time we need one platform to hold the train
+    	    if(arr[i]<=dep[j]){
+    	        i++;
+    	        count++;
+    	    }
+//if departure time is less than we can reduce our one platform
+    	    else {
+    	        j++;
+    	        count--;
+    	    }
+//return the max count of platform
+    	    ans=max(ans,count);
+    	}
+    	return ans;
+    }
