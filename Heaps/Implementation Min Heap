@@ -1,3 +1,5 @@
+//heap sort code is also same check at sorting part in this repo
+
 /*The structure of the class is
 struct MinHeap
 {
