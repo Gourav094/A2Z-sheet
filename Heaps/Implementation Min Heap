@@ -1,0 +1,102 @@
+/*The structure of the class is
+struct MinHeap
+{
+    int *harr;
+    int capacity, heap_size;
+    MinHeap(int cap) {heap_size = 0; capacity = cap; harr = new int[cap];}
+    int extractMin();
+    void deleteKey(int i);
+    void insertKey(int k);
+    int parent(int i);
+    int left(int i);
+    int right(int i);
+};*/
+
+
+
+//Function to extract minimum value in heap and then to store 
+//next minimum value at first index.
+int MinHeap::extractMin() 
+{
+    // Your code here
+    if(heap_size <= 0){
+        return -1;
+    }
+    if(heap_size == 1){
+        --heap_size;
+        return harr[0];
+    }
+//since first element is minimum 
+    int temp=harr[0];
+//for heapify replace first with last element
+    harr[0]=harr[heap_size - 1];
+//reduce the size
+    --heap_size;
+//call heapify function
+    MinHeapify(0);
+    return temp;
+}
+
+//Function to delete a key at ith index.
+void MinHeap::deleteKey(int i)
+{
+    // Your code here
+    if(i > heap_size-1){
+        return;
+    }
+    //first replace the ith element with minimum element to delete it
+    decreaseKey(i,INT_MIN);
+    //call extract min function to delete the element
+    extractMin();
+}
+
+//Function to insert a value in Heap.
+void MinHeap::insertKey(int k) 
+{
+    // Your code here
+    //if heap size ==  capcity
+    if(heap_size == capacity){
+        return;
+    }
+//firstly increase heap size
+    ++heap_size;
+//put k at last element 
+    harr[heap_size-1]=k;
+//find child
+    int child=heap_size -1;
+    while(child > 0){
+        int parent=(child - 1)/2;
+//if root is greater than child element 
+        if(harr[child] < harr[parent]){
+            swap(harr[child],harr[parent]);
+        }
+        child=parent;
+    }
+    
+}
+
+//Function to change value at ith index and store that value at first index.
+void MinHeap::decreaseKey(int i, int new_val) 
+{
+    harr[i] = new_val;
+    while (i != 0 && harr[parent(i)] > harr[i]) {
+        swap(harr[i], harr[parent(i)]);
+        i = parent(i);
+    }
+}
+
+/* You may call below MinHeapify function in
+   above codes. Please do not delete this code
+   if you are not writing your own MinHeapify */
+void MinHeap::MinHeapify(int i) 
+{
+    int l = left(i);
+    int r = right(i);
+    int smallest = i;
+    if (l < heap_size && harr[l] < harr[i]) smallest = l;
+    if (r < heap_size && harr[r] < harr[smallest]) smallest = r;
+    if (smallest != i) {
+        swap(harr[i], harr[smallest]);
+        MinHeapify(smallest);
+    }
+}
