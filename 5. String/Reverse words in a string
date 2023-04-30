@@ -1,3 +1,23 @@
+e.g-- the sky is blue
+class Solution {
+public:
+    string reverseWords(string s) {
+        string ans="";
+        string temp="";
+        stringstream for extracting words from string 
+        stringstream ss(s);
+        // store first word bcoz we dont need space before first word. eg-> the 
+        ss >> temp;
+        ans=temp;
+        while(ss >> temp){
+            // store next words before the first word .e.g--  sky the  
+            ans=temp + ' ' + ans;
+        }
+        return ans;
+    }
+};
+
+
 class Solution {
 public:
     string reverseWords(string s) {
