@@ -1,0 +1,30 @@
+statement:
+find consective number of size groupSize in aray 
+solution:
+1. take map to store the frequency of the array
+2. take first element and iterate over map to find the elemnt from to  till groupSize 
+3. if any element from series not found return false
+4. decrase the occurence and remove the element from map if occurence  is zero 
+
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int groupSize) {
+        map<int,int>mp;
+        for(int i=0;i<hand.size();i++){
+            mp[hand[i]]++;
+        }
+        while(!mp.empty()){
+            int first=mp.begin()->first;
+            for(int i=first;i < first+groupSize;i++){
+                if(!mp.count(i)){
+                    return false;
+                }
+                mp[i]--;
+                if(mp[i] == 0){
+                    mp.erase(i);
+                }
+            }
+        }
+        return true;
+    }
+};
