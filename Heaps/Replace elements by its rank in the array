@@ -1,0 +1,24 @@
+take a priority queue to sort the array and them traverse the priority queue 
+store in map with frequency(count) increase count ony when there is no repeating element
+
+vector<int> replaceWithRank(vector<int> &arr, int n){
+        vector<int>ans(n);
+        priority_queue<int,vector<int>,greater<int>>pq;
+        for(int i=0;i<n;i++){
+            pq.push(arr[i]);
+        }
+        unordered_map<int,int>mp;
+        int count=1;
+        while(pq.size()){
+            mp.insert({pq.top(),count});
+            int top=pq.top();   // if we have multiple occurence in our array
+            pq.pop();
+            if(top < pq.top()){
+                count++;
+            }
+        }
+        for(int i=0;i<n;i++){
+            ans[i]=mp[arr[i]];
+        }
+        return ans;
+    }
