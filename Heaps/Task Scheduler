@@ -1,0 +1,43 @@
+explanation:
+1. count the occurence of all elements and store them in a priority queue
+2. Take top of priority queue and insert in queue with the time in which we can reschedule the task i.e q.push(val,time+n)
+val=pq.top()-1 bcoz we already taken parent element now we only schedule next occurence of the task
+3. if queue not empty ==> take the task and push into priority queue
+
+
+
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        map<char,int>mp;
+        for(auto i:tasks){
+            mp[i]++;
+        }
+        priority_queue<int>pq;
+        for(auto i:mp){
+            pq.push(i.second);
+        }
+        
+        queue<pair<int,int>>q;
+        int time = 0;
+        while(!q.empty() || !pq.empty()){
+            time++;
+            if(pq.size() != 0){
+                int val=pq.top();
+                val--;
+                if(val != 0){
+                    q.push({val,time+n});
+                }
+                pq.pop();
+            }
+            if(!q.empty()){
+                auto val=q.front();
+                if(val.second == time){
+                    pq.push(val.first);
+                    q.pop();
+                }
+            }
+        }
+        return time;
+    }
+};
