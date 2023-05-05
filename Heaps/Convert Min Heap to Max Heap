@@ -1,0 +1,25 @@
+class Solution{
+public:
+    void Heapify(vector<int>&arr,int i,int n){
+        int left=2*i + 1;
+        int right=2*i + 2;
+        int large=i;
+        if(left < n && arr[large] < arr[left]){
+            large=left;
+        }
+        if(right < n && arr[large] < arr[right]){
+            large=right;
+        }
+        if(large != i){
+            swap(arr[large],arr[i]);
+            Heapify(arr,large,n);
+            
+        }
+    }
+    void convertMinToMaxHeap(vector<int> &arr, int N){
+        for(int i=(N-2)/2; i>=0; i--){
+            Heapify(arr,i,N);
+        }
+    }
+    
+};
