@@ -1,0 +1,59 @@
+1. follow and unfollow function
+we need a map to count the followers and set bcoz a user can have multiple friends
+2. posttweet
+A user post a tweet ==> we need a data structure to count the user and corresponding tweet and a count for latest tweet
+3. get news feed
+now we have to extract the atmost 10 tweet 
+check tweet is posted by user and user followers if true then store in a vector and increase n
+
+
+class Twitter {
+public:
+    int cur=0;
+    map<int, set<int>> friends;
+    priority_queue<vector<int>>timeline;
+    Twitter() {
+        cur=0;
+        friends.clear();
+        timeline=priority_queue<vector<int>>();
+    }
+    
+    void postTweet(int userId, int tweetId) {
+    //maintain count and tweet to user ID
+        timeline.push({cur++,userId,tweetId});
+    }
+    
+    vector<int> getNewsFeed(int userId) {
+        vector<int>ans;
+        priority_queue<vector<int>>userTime=timeline;
+        int n=0;
+        //extract only 10 tweets 
+        while(!userTime.empty() && n < 10){
+            auto top=userTime.top();
+            userTime.pop();
+    //check tweet is posted by user and their followers
+            if(top[1] == userId || friends[userId].count(top[1])){
+                n++;
+                ans.push_back(top[2]);
+            }
+        }
+        return ans;
+    }
+    
+    void follow(int followerId, int followeeId) {
+        friends[followerId].insert(followeeId);
+    }
+    
+    void unfollow(int followerId, int followeeId) {
+        friends[followerId].erase(followeeId);
+    }
+};
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter* obj = new Twitter();
+ * obj->postTweet(userId,tweetId);
+ * vector<int> param_2 = obj->getNewsFeed(userId);
+ * obj->follow(followerId,followeeId);
+ * obj->unfollow(followerId,followeeId);
+ */
