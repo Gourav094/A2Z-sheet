@@ -1,0 +1,137 @@
+Just include and exclude case
+// Recursion
+class Solution
+{
+    public:
+    //Function to return max value that can be put in knapsack of capacity W.
+    int solve(int W, int wt[], int val[], int ind){
+        if(ind == 0){
+            if(wt[ind] <= W){
+                return val[0];
+            }
+            else return 0;
+        }
+        int inc=0;
+        if(wt[ind] <= W){
+            inc=val[ind] + solve(W-wt[ind],wt,val,ind-1);
+        }
+        int exc=solve(W,wt,val,ind-1);
+        int ans=max(inc,exc);
+        return ans;
+    }
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+       // Your code here
+       return solve(W,wt,val,n-1);
+    }
+};
+
+//Memoization
+class Solution
+{
+    public:
+    //Function to return max value that can be put in knapsack of capacity W.
+    int solve(int W, int wt[], int val[], int ind,vector<vector<int>>&dp){
+        if(ind == 0){
+            if(wt[ind] <= W){
+                return val[0];
+            }
+            else return 0;
+        }
+        if(dp[ind][W]!=-1){
+            return dp[ind][W];
+        }
+        int inc=0;
+        if(wt[ind] <= W){
+            inc=val[ind] + solve(W-wt[ind],wt,val,ind-1,dp);
+        }
+        int exc=solve(W,wt,val,ind-1,dp);
+        dp[ind][W]=max(inc,exc);
+        return dp[ind][W];
+    }
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+       // Your code here
+       vector<vector<int>>dp(n,vector<int>(W+1,-1));
+       return solve(W,wt,val,n-1,dp);
+    }
+};
+
+// Tabulation
+int knapSack(int W, int wt[], int val[], int n) 
+    { 
+       // Your code here
+       int T[n+1][W+1];
+    //   memset(T,-1,sizeof(T));
+       for(int i=0;i<n+1;i++){
+           for(int j=0;j<W+1;j++){
+               if(i==0 || j==0){
+                   T[i][j]=0;
+               }
+           }
+       }
+       for(int i=1;i<n+1;i++){
+           for(int j=1;j<W+1;j++){
+               if(wt[i-1]<=j){
+                   T[i][j]=max(val[i-1]+T[i-1][j-wt[i-1]],T[i-1][j]);
+               }
+               else{
+                   T[i][j]=T[i-1][j];
+               }
+           }
+       }
+       return T[n][W];
+    }
+    
+    //Space optimisation
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+       // Your code here
+       int T[n+1][W+1];
+    //   memset(T,-1,sizeof(T));
+       for(int i=0;i<n+1;i++){
+           for(int j=0;j<W+1;j++){
+               if(i==0 || j==0){
+                   T[i][j]=0;
+               }
+           }
+       }
+       for(int i=1;i<n+1;i++){
+           for(int j=1;j<W+1;j++){
+               if(wt[i-1]<=j){
+                   T[i][j]=max(val[i-1]+T[i-1][j-wt[i-1]],T[i-1][j]);
+               }
+               else{
+                   T[i][j]=T[i-1][j];
+               }
+           }
+       }
+       return T[n][W];
+    }
+    
+    
+    // More optimisation
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+       // Your code here
+       int T[n+1][W+1];
+    //   memset(T,-1,sizeof(T));
+       for(int i=0;i<n+1;i++){
+           for(int j=0;j<W+1;j++){
+               if(i==0 || j==0){
+                   T[i][j]=0;
+               }
+           }
+       }
+       for(int i=1;i<n+1;i++){
+           for(int j=1;j<W+1;j++){
+               if(wt[i-1]<=j){
+                   T[i][j]=max(val[i-1]+T[i-1][j-wt[i-1]],T[i-1][j]);
+               }
+               else{
+                   T[i][j]=T[i-1][j];
+               }
+           }
+       }
+       return T[n][W];
+    }
