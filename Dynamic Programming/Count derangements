@@ -1,0 +1,82 @@
+#define mod 1000000007
+long long solve(int n){
+    if(n == 2){
+        return 1;
+    }
+    if(n == 1){
+        return 0;
+    }
+    int ans=(n-1)%mod*(solve(n-1)%mod+solve(n-2)%mod);
+    return ans;
+}
+long long int countDerangements(int n) {
+    // Write your code here.
+    return solve(n);
+}
+
+// Memoization
+#define mod 1000000007
+long long solve(int n,vector<long long >&dp){
+    if(n == 2){
+        return 1;
+    }
+    if(n == 1){
+        return 0;
+    }
+    if(dp[n] != -1){
+        return dp[n];
+    }
+    dp[n]=((n-1)%mod)*((solve(n-1,dp)%mod)+(solve(n-2,dp)%mod))%mod;
+    return dp[n];
+}
+long long int countDerangements(int n) {
+    // Write your code here.
+    vector<long long>dp(n+1,-1);
+
+    return solve(n,dp);
+}
+//Tabulation
+#define mod 1000000007
+long long solve(int n){
+    vector<long long>dp(n+1,0);
+    dp[2]=1;
+    dp[1]=0;
+    for(int i=3;i <= n;i++){
+        long long first=dp[i-1]%mod;
+        long long second=dp[i-2]%mod;
+        long long sum=first+second;
+        dp[i]=((i-1)*sum)%mod;
+    }
+    
+    return dp[n];
+}
+long long int countDerangements(int n) {
+    // Write your code here.
+    
+
+    return solve(n);
+}
+
+//Space optimisation
+#define mod 1000000007
+long long solve(int n){
+    
+    long long prev=1;
+    long long prev2=0;
+    for(int i=3;i <= n;i++){
+        long long first=prev%mod;
+        long long second=prev2%mod;
+        long long sum=first+second;
+        long long ans=((i-1)*sum)%mod;
+        prev2=prev;
+        prev=ans;
+    }
+    
+    return prev;
+}
+long long int countDerangements(int n) {
+    // Write your code here.
+    
+
+    return solve(n);
+}
