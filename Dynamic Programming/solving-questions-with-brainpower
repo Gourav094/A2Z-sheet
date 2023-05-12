@@ -1,0 +1,85 @@
+Input: questions = [[3,2],[4,3],[4,4],[2,5]]
+Output: 5
+Explanation: The maximum points can be earned by solving questions 0 and 3.
+- Solve question 0: Earn 3 points, will be unable to solve the next 2 questions
+- Unable to solve questions 1 and 2
+- Solve question 3: Earn 2 points
+Total points earned: 3 + 2 = 5. There is no other way to earn 5 or more points.
+
+approach:
+We just need to include and exclude and find the maximum among them .
+for a case we have to consider its value and skip iteration for questions[n][1]
+
+In recursion==> we are finding result after calculation the forward result and repeat this tep for all to get maximum output
+
+//Recursive
+class Solution {
+public:
+    int solve(vector<vector<int>>& questions,int i,int n){
+        if(i >= n){
+            return 0;
+        }
+        int val=questions[i][0];
+        int ind=questions[i][1];
+        int inc=solve(questions,i+ind+1,n)+val;
+        int  exc=solve(questions,i+1,n);
+        int ans=max(inc,exc);
+        return ans;
+    }
+    long long mostPoints(vector<vector<int>>& questions) {
+        int n=questions.size();
+        return solve(questions,0,n);
+    }
+};
+
+//Memoization
+class Solution {
+public:
+    long long solve(vector<vector<int>>& questions,int i,int n,vector<long long>&dp){
+        if(i >= n){
+            return 0;
+        }
+        int val=questions[i][0];
+        int ind=questions[i][1];
+        if(dp[i] != -1){
+            return dp[i];
+        }
+        long long inc=solve(questions,i+ind+1,n,dp)+val;
+        long long  exc=solve(questions,i+1,n,dp);
+        dp[i]=max(inc,exc);
+        return dp[i];
+    }
+    long long mostPoints(vector<vector<int>>& questions) {
+        int n=questions.size();
+        vector<long long>dp(n+1,-1);
+        return solve(questions,0,n,dp);
+    }
+};
+
+//Tabulation
+in tabulation==> we start from back so that we dont need to come back .we just start adding last sum and then move to forward
+
+class Solution {
+public:
+    long long solve(vector<vector<int>>& questions,int n){
+        vector<long long >dp(n+1,0);
+        
+        
+        for(int i=n-1;i >= 0;i--){
+            int val=questions[i][0];
+            int ind=questions[i][1];
+        //if next iteration is greater than then just dont take this value
+            int next = (i+ind+1 <= n) ? i+ind+1:0;
+            
+            long long inc=val+dp[next];
+            long long exc=dp[i+1];
+            dp[i]=max(inc,exc);
+        }
+       
+        return dp[0];
+    }
+    long long mostPoints(vector<vector<int>>& questions) {
+        int n=questions.size();
+        return solve(questions,n);
+    }
+};
