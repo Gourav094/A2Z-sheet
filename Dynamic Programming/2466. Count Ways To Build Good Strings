@@ -27,3 +27,53 @@ public:
         return solve(low,high,zero,one,0);
     }
 };
+//tabulation
+#define mod 1000000007
+class Solution {
+public:
+    int solve(int low, int high, int zero, int one){
+        vector<int>dp(high+1,0);
+        dp[0]=1;
+        for(int i=1;i <= high;i++){
+            if(i-zero >= 0){
+                dp[i]+=dp[i-zero] % mod;
+            }
+            if(i-one >= 0){
+                dp[i]+=dp[i-one] % mod;
+            }
+        }
+        long long  ans=0;
+        for(int i=low;i <= high;i++){
+            ans+=dp[i]%mod;
+        }
+        return ans % mod;
+    }
+    int countGoodStrings(int low, int high, int zero, int one) {
+        return solve(low,high,zero,one);
+    }
+};
+//Memoization
+#define mod 1000000007
+class Solution {
+public:
+    int solve(int low, int high, int zero, int one,int len,vector<int>&dp){
+        if(len > high){
+            return 0;
+        }
+        int ans=0;
+        if(dp[len] != -1){
+            return dp[len];
+        }
+        if(len >= low){
+            ans++;
+        }
+        int ans1 = solve(low,high,zero,one,len+zero,dp) % mod;
+        int ans2 = solve(low,high,zero,one,len+one,dp) % mod;
+        dp[len] = (ans+ans1+ans2) % mod;
+        return dp[len] % mod;
+    }
+    int countGoodStrings(int low, int high, int zero, int one) {
+        vector<int>dp(high+1,-1);
+        return solve(low,high,zero,one,0,dp);
+    }
+};
