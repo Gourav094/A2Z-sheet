@@ -1,0 +1,29 @@
+problem statement:
+In this question we are given with low high zero and one .
+we have to return all possible strings with len b/w low to high but we can use 
+'0' zero time and '1' one time at a time.
+e.g-->
+zero-2,one-2 low-3,high-3
+all string start from Either 00 or 11 and continue to append one and zero fursther upto len <= high
+o/p- 0 bcoz no string possible
+
+//Recursive
+
+class Solution {
+public:
+    int solve(int low, int high, int zero, int one,int len){
+        if(len > high){
+            return 0;
+        }
+        int ans=0;
+        if(len >= low){
+            ans++;
+        }
+        int ans1 = solve(low,high,zero,one,len+zero);
+        int ans2 = solve(low,high,zero,one,len+one);
+        return ans+ans1+ans2;
+    }
+    int countGoodStrings(int low, int high, int zero, int one) {
+        return solve(low,high,zero,one,0);
+    }
+};
