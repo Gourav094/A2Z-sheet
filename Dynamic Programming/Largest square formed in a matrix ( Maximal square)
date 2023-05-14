@@ -1,0 +1,113 @@
+we are finding maximum square '1' among the matrix .
+so start from 1st elemet and check for all sides .
+choose the minimum side for becoming a square then after finding all square take maximum
+e.g--
+why minimum
+1 1 1
+1 1 1 1
+0 1 1 1 
+0 1 1 1 
+left -- 2 one 
+down --  one 
+diagonal--3 one
+so choose minimum for becoming square .i.e 2 size sqaure
+
+//recursion
+
+class Solution{
+public:
+    int solve(vector<vector<int>>& mat,int i,int j,int &maxi){
+        if(i >= mat.size() || j >= mat[0].size()){
+            return 0;
+        }
+   //Find '1' all side 
+        int right=solve(mat,i,j+1,maxi);
+        int diagonal=solve(mat,i+1,j+1,maxi);
+        int down=solve(mat,i+1,j,maxi);
+  //if current element is 1 then
+        if(mat[i][j] == 1){
+   //minimum of all side bcoz we have to create sqaure so we are taking upto zero in any of side
+            int ans=1+min(right,min(diagonal,down));
+    //Then out all all squares our ans is maximum
+            maxi=max(ans,maxi);
+            return ans;
+        }
+    // if 1st element itself is not '1'
+        else return 0;
+    }
+    int maxSquare(int n, int m, vector<vector<int>> mat){
+        // code here
+        int maxi=0;
+        solve(mat,0,0,maxi);
+        return maxi;
+    }
+};
+
+//tabulation
+lass Solution{
+public:
+    int solve(vector<vector<int>>& mat,int &maxi){
+        int row=mat.size();
+        int col=mat[0].size();
+        vector<vector<int>>dp(row+1,vector<int>(col+1,0));
+        
+        for(int i=row-1; i >= 0;i--){
+            for(int j=col-1;j >= 0;j--){
+                int right=dp[i][j+1];
+                int diagonal=dp[i+1][j+1];
+                int down=dp[i+1][j];
+                
+                if(mat[i][j] == 1){
+                    dp[i][j]=1+min(right,min(diagonal,down));
+                    maxi=max(dp[i][j],maxi);
+                }
+                else dp[i][j]=0;
+            }
+        }
+        
+        return dp[0][0];
+    }
+    int maxSquare(int n, int m, vector<vector<int>> mat){
+        // code here
+        int maxi=0;
+        solve(mat,maxi);
+        return maxi;
+    }
+};
+//Memozation
+class Solution{
+public:
+    int solve(vector<vector<int>>& mat,int i,int j,int &maxi,vector<vector<int>>&dp){
+        if(i >= mat.size() || j >= mat[0].size()){
+            return 0;
+        }
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+        int right=solve(mat,i,j+1,maxi,dp);
+        int diagonal=solve(mat,i+1,j+1,maxi,dp);
+        int down=solve(mat,i+1,j,maxi,dp);
+
+        if(mat[i][j] == 1){
+            dp[i][j]=1+min(right,min(diagonal,down));
+            maxi=max(dp[i][j],maxi);
+            
+            return dp[i][j];
+        }
+        else return dp[i][j]=0;
+    }
+    int maxSquare(int n, int m, vector<vector<int>> mat){
+        // code here
+        int maxi=0;
+        vector<vector<int>>dp(n,vector<int>(m,-1));
+        solve(mat,0,0,maxi,dp);
+        return maxi;
+    }
+};
+
+//space optimisation
+take two vector cur and next .
+and just change the cur with dp[i]
+and next with dp[i+1)
+in tabulation code 
+rest all same
