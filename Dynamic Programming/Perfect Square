@@ -1,1 +1,64 @@
+We have to return the minimum no of square of no required to get n.
+we can test for each number less than n .
+add 1 in each iteration for getting that number
+
 //Recursion
+class Solution {
+public:
+    int solve(int n){
+        if(n == 0){
+            return 0;
+        }
+        int ans=n;
+        for(int i=1;i*i <= n;i++){
+            ans=min(ans,1+solve(n-i*i));
+        }
+        return ans;
+    }
+    int numSquares(int n) {
+        return solve(n);
+    }
+};
+//memiozation
+class Solution {
+public:
+    int solve(int n,vector<int>&dp){
+        if(n == 0){
+            return 0;
+        }
+        if(dp[n] != -1){
+            return dp[n];
+        }
+        int ans=n;
+        for(int i=1;i*i <= n;i++){
+            ans=min(ans,1+solve(n-i*i,dp));
+        }
+        dp[n]=ans;
+        return dp[n];
+    }
+    int numSquares(int n) {
+        vector<int>dp(n+1,-1);
+        return solve(n,dp);
+    }
+};
+//tabulation
+class Solution {
+public:
+    int solve(int n){
+        vector<int>dp(n+1,INT_MAX);
+        dp[0]=0;
+
+        for(int i=1;i <= n;i++){
+            for(int j=1;j*j <= n;j++){
+                int temp=j*j;
+                if(i-temp >= 0){
+                    dp[i]=min(dp[i],1+dp[i-temp]);
+                }
+            }
+        }
+        return dp[n];
+    }
+    int numSquares(int n) {
+        return solve(n);
+    }
+};
