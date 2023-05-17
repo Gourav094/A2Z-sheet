@@ -1,3 +1,13 @@
+Input: values = [1,2,3]
+Output: 6
+Explanation: The polygon is already triangulated, and the score of the only triangle is 6.
+Our question is to divide the polygon into parts such that their all parts can make triangle .
+approach :
+since first and last elemenst are neighbours ==> so take first elements(i) and last element(j) 
+now for making triangle we need to choode every element b/w them(k).
+
+So ans is arr[i]*arr[j]*arr[k] ==> for making one triangle but call recursion for rest of the triangle.
+
 //Recursive approach
 class Solution {
 public:
@@ -14,5 +24,54 @@ public:
     }
     int minScoreTriangulation(vector<int>& values) {
         return solve(values,0,values.size()-1);
+    }
+};
+//Memoization
+int solve(vector<int>& values,int i,int j,vector<vector<int>>&dp){
+        if(i+1 == j){
+            return 0;
+        }
+        int ans=INT_MAX;
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+        for(int k=i+1;k < j;k++){
+            int tempans=(values[i]*values[j]*values[k])+solve(values,i,k,dp)+solve(values,k,j,dp);
+            ans=min(ans,tempans);
+        } 
+        dp[i][j]=ans;
+        return dp[i][j];
+    }
+    int minScoreTriangulation(vector<int>& values) {
+        int n=values.size();
+        vector<vector<int>>dp(n,vector<int>(n,-1));
+        return solve(values,0,n-1,dp);
+    }
+    
+//Tabulation
+class Solution {
+public:
+    int solve(vector<int>& values){
+        int n=values.size();
+        vector<vector<int>>dp(n,vector<int>(n,0));
+//in bottom up reverse the top down so i start from last to first 
+        for(int i=n-1;i >= 0;i--){
+//if i start from j will take from starting but if less than 2 cant make triangle
+            for(int j=i+2;j < n;j++){
+                int ans=INT_MAX;
+//same as top down
+                for(int k=i+1;k < j;k++){
+                    int tempans=(values[i]*values[j]*values[k])+dp[i][k]+dp[k][j];
+                    ans=min(ans,tempans);
+                }
+                dp[i][j]=ans;
+            }
+        }
+
+        return dp[0][n-1];
+    }
+    int minScoreTriangulation(vector<int>& values) {
+        
+        return solve(values);
     }
 };
