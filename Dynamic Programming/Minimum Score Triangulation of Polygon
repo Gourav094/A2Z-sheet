@@ -1,0 +1,18 @@
+//Recursive approach
+class Solution {
+public:
+    int solve(vector<int>& values,int i,int j){
+        if(i+1 == j){
+            return 0;
+        }
+        int ans=INT_MAX;
+        for(int k=i+1;k < j;k++){
+            int tempans=(values[i]*values[j]*values[k])+solve(values,i,k)+solve(values,k,j);
+            ans=min(ans,tempans);
+        } 
+        return ans;
+    }
+    int minScoreTriangulation(vector<int>& values) {
+        return solve(values,0,values.size()-1);
+    }
+};
