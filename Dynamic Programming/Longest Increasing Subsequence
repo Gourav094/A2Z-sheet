@@ -1,0 +1,136 @@
+We just have to find the longest sequence size so we dont need to store it 
+we can maintain two variables cur and prev 
+Input: nums = [10,9,2,5,3,7,101,18]
+Output: 4
+Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
+
+//Recursive
+int solve(vector<int>& nums,int n,int cur,int prev){
+        if(cur == n){
+            return 0;
+        }
+        int take=0;
+        if(prev == -1 || nums[prev] < nums[cur]){
+            take=1+solve(nums,n,cur+1,cur);
+        }
+        int not_take=0+solve(nums,n,cur+1,prev);
+        return max(take,not_take);
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        return solve(nums,nums.size(),0,-1);
+    }
+    
+    //Memoization
+    int solve(vector<int>& nums,int n,int cur,int prev,vector<vector<int>>&dp){
+        if(cur == n){
+            return 0;
+        }
+        if(dp[cur][prev+1] != -1){
+            return dp[cur][prev+1];
+        }
+        int take=0;
+        if(prev == -1 || nums[prev] < nums[cur]){
+            take=1+solve(nums,n,cur+1,cur,dp);
+        }
+        int not_take=0+solve(nums,n,cur+1,prev,dp);
+        dp[cur][prev+1]= max(take,not_take);
+        return dp[cur][prev+1];
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        vector<vector<int>>dp(n,vector<int>(n+1,-1));
+        return solve(nums,n,0,-1,dp);
+    }
+    
+    //Tabulation
+    
+    int solve(vector<int>& nums){
+        int n=nums.size();
+        vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+//we will use prev+1 instead of prev bcoz prev can be -1 which cant be accessed
+        for(int cur=n-1;cur >= 0;cur--){
+            for(int prev=cur-1;prev >= -1;prev--){
+                int take=0;
+                if(prev == -1 || nums[prev] < nums[cur]){
+
+                    take=1+dp[cur+1][cur+1];
+                }
+                int not_take=0+dp[cur+1][prev+1];
+                dp[cur][prev+1]=max(take,not_take);
+                
+            }
+        }
+    
+        return dp[0][0];
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        return solve(nums);
+    }
+    
+    //Space optimisation
+    int solve(vector<int>& nums){
+        int n=nums.size();
+        vector<int>currow(n+1,0);
+        vector<int>nextrow(n+1,0);
+        
+        for(int cur=n-1;cur >= 0;cur--){
+            for(int prev=cur-1;prev >= -1;prev--){
+                int take=0;
+                if(prev == -1 || nums[prev] < nums[cur]){
+                    take=1+nextrow[cur+1];
+                }
+                int not_take=0+nextrow[prev+1];
+                currow[prev+1]=max(take,not_take);
+                
+            }
+            nextrow=currow;int solve(vector<int>& nums){
+
+        vector<int>ans;
+        ans.push_back(nums[0]);
+        for(int i=0;i < nums.size();i++){
+            if(nums[i] > ans.back()){
+                ans.push_back(nums[i]);
+            }
+            else{
+                int index=lower_bound(ans.begin(),ans.end(),nums[i])-ans.begin();
+                ans[index]=nums[i];
+            }
+        }
+        return ans.size();
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        if(nums.size() == 0){
+            return 0;
+        }
+        return solve(nums);
+    }
+        }
+    
+        return nextrow[0];
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        return solve(nums);
+    }
+    
+    //More optimisation--Dp on trees
+    int solve(vector<int>& nums){
+
+        vector<int>ans;
+        ans.push_back(nums[0]);
+        for(int i=0;i < nums.size();i++){
+            if(nums[i] > ans.back()){
+                ans.push_back(nums[i]);
+            }
+            else{
+                int index=lower_bound(ans.begin(),ans.end(),nums[i])-ans.begin();
+                ans[index]=nums[i];
+            }
+        }
+        return ans.size();
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        if(nums.size() == 0){
+            return 0;
+        }
+        return solve(nums);
+    }
