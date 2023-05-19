@@ -1,0 +1,131 @@
+//here simple idea is to solve this problem is same as house robbery uestion 
+i.e case 1 is include first element last not and find the max sum but remember we have to skip 1 in b/w
+cse 2 is include last element but not 1 .
+//Recursion
+class Solution {
+public:
+    int solve(vector<int>& slices,int ind,int end,int n){
+        if(n == 0 || ind > end){
+            return 0;
+        }
+        int take=slices[ind]+solve(slices,ind+2,end,n-1);
+        int not_take=0+solve(slices,ind+1,end,n);
+        return max(take,not_take);
+    }
+    int maxSizeSlices(vector<int>& slices) {
+        int k=slices.size();
+        int cost1=solve(slices,0,k-2,k/3);
+        int cost2=solve(slices,1,k-1,k/3);
+        return max(cost1,cost2);
+    }
+};
+
+// memoization
+class Solution {
+public:
+    int solve(vector<int>& slices,int ind,int end,int n,vector<vector<int>>&dp){
+        if(n == 0 || ind > end){
+            return 0;
+        }
+        if(dp[ind][n] != -1){
+            return dp[ind][n];
+        }
+        int take=slices[ind]+solve(slices,ind+2,end,n-1,dp);
+        int not_take=0+solve(slices,ind+1,end,n,dp);
+        dp[ind][n]=max(take,not_take);
+        return dp[ind][n];
+    }
+    int maxSizeSlices(vector<int>& slices) {
+        int k=slices.size();
+        vector<vector<int>>dp1(k+1,vector<int>(k,-1));
+        int cost1=solve(slices,0,k-2,k/3,dp1);
+        vector<vector<int>>dp2(k+1,vector<int>(k,-1));
+        int cost2=solve(slices,1,k-1,k/3,dp2);
+        return max(cost1,cost2);
+    }
+};
+
+//Tabulation
+int solve(vector<int>& slices){
+        int k=slices.size();
+//size of both dp vector if k+2 bcoz we are accessing ind+2 element means out of boundation
+        vector<vector<int>>dp1(k+2,vector<int>(k+2,0));
+//case 1 if first index included last not
+        for(int ind=k-2;ind >= 0;ind--){
+            for(int n=1;n <= k/3;n++){
+                int take=slices[ind]+dp1[ind+2][n-1];
+                int not_take=0+dp1[ind+1][n];
+                dp1[ind][n]=max(take,not_take);
+            }
+        }
+        int case1=dp1[0][k/3];
+
+        vector<vector<int>>dp2(k+2,vector<int>(k+2,0));
+//case 2 if first not included but last includeded
+        for(int ind=k-1;ind >= 1;ind--){
+            for(int n=1;n <= k/3;n++){
+                int take=slices[ind]+dp2[ind+2][n-1];
+                int not_take=0+dp2[ind+1][n];
+                dp2[ind][n]=max(take,not_take);
+            }
+        }
+        int case2=dp2[1][k/3];
+        return max(case1,case2);
+    }
+    int maxSizeSlices(vector<int>& slices) {
+        
+
+        int cost1=solve(slices);
+        int cost2=solve(slices);
+        return max(cost1,cost2);
+    }
+    
+//Space Optimisation
+
+/* Just same as tabulation .We can use three array instead of making 2d dp bcoz our cur is depend on two variable only 
+--make three array -cur,prev,next and just replace the 
+dp[cur]=prev
+dp[cur+1]=cur
+dp[cur+2]=next
+
+int solve(vector<int>& slices){
+    int k=slices.size();
+
+    vector<int>cur(k+2,0);
+    vector<int>prev(k+2,0);
+    vector<int>next(k+2,0);
+
+    for(int ind=k-2;ind >= 0;ind--){
+        for(int n=1;n <= k/3;n++){
+            int take=slices[ind]+next[n-1];
+            int not_take=0+cur[n];
+            prev[n]=max(take,not_take);
+        }
+        next=cur;
+        cur=prev;
+    }
+    int case1=cur[k/3];
+
+    vector<int>cur2(k+2,0);
+    vector<int>prev2(k+2,0);
+    vector<int>next2(k+2,0);
+
+    for(int ind=k-1;ind >= 1;ind--){
+        for(int n=1;n <= k/3;n++){
+            int take=slices[ind]+next2[n-1];
+            int not_take=0+cur2[n];
+            prev2[n]=max(take,not_take);
+        }
+        next2=cur2;
+        cur2=prev2;
+    }
+    int case2=cur2[k/3];
+    return max(case1,case2);
+}
+int maxSizeSlices(vector<int>& slices) {
+
+
+    int cost1=solve(slices);
+    int cost2=solve(slices);
+    return max(cost1,cost2);
+}
