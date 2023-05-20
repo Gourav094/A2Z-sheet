@@ -1,0 +1,122 @@
+Input: nums = [1,5,11,5]
+Output: true
+Explanation: The array can be partitioned as [1, 5, 5] and [11].
+
+Find total and divide by 2
+if it is odd then we cant partition into it 
+but if it even then we just need to find the subset with half sum 
+
+//Recursion
+bool solve(vector<int>& nums,int ind,int target){
+        if(ind >= nums.size() || target < 0){
+            return 0;
+        }
+        if(target == 0){
+            return 1;
+        }
+        bool take=solve(nums,ind+1,target-nums[ind]);
+        bool not_take=solve(nums,ind+1,target);
+        return take || not_take;
+    }
+    bool canPartition(vector<int>& nums) {
+        int total=0;
+        
+        for(auto i:nums){
+            total+=i;
+        }
+        if(total % 2 != 0){
+            return false;
+        }
+        return solve(nums,0,total/2);
+    }
+//Memoization
+bool solve(vector<int>& nums,int ind,int target,vector<vector<int>>&dp){
+        if(ind >= nums.size() || target < 0){
+            return 0;
+        }
+        if(target == 0){
+            return 1;
+        }
+        if(dp[ind][target] != -1){
+            return dp[ind][target];
+        }
+        bool take=solve(nums,ind+1,target-nums[ind],dp);
+        bool not_take=solve(nums,ind+1,target,dp);
+        dp[ind][target]= take || not_take;
+        return dp[ind][target];
+    }
+    bool canPartition(vector<int>& nums) {
+        int total=0;
+        int n=nums.size();
+        for(auto i:nums){
+            total+=i;
+        }
+        if(total % 2 != 0){
+            return false;
+        }
+        vector<vector<int>>dp(n,vector<int>(total+1,-1));
+        return solve(nums,0,total/2,dp);
+    }
+
+//Tabulation
+bool solve(vector<int>& nums,int n,int total){
+        vector<vector<int>>dp(n+1,vector<int>(total+1,0));
+
+        for(int i=0; i <= n;i++){
+            dp[i][0]=1;
+        }
+        for(int ind=n-1;ind >= 0;ind--){
+            for(int target=0;target <= total/2 ; target++){
+                bool inc=0;
+                if(target - nums[ind] >= 0){
+                    inc=dp[ind+1][target-nums[ind]];
+
+                }
+                int exc=dp[ind+1][target-0];
+                dp[ind][target]=inc or exc;
+            }
+        }
+        return dp[0][total/2];
+    }
+    bool canPartition(vector<int>& nums) {
+        int total=0;
+        for(int i=0;i < nums.size();i++){
+            total+=nums[i];
+        }
+        if(total % 2 != 0){
+            return 0;
+        }
+        return solve(nums,nums.size(),total);
+    }
+
+//Space optimisation
+bool solve(vector<int>& nums,int n,int total){
+       
+        vector<int>cur(total+1,0);
+        vector<int>next(total+1,0);
+        cur[0]=1;
+        next[0]=1;
+        for(int ind=n-1;ind >= 0;ind--){
+            for(int target=0;target <= total/2 ; target++){
+                bool inc=0;
+                if(target - nums[ind] >= 0){
+                    inc=next[target-nums[ind]];
+
+                }
+                int exc=next[target-0];
+                cur[target]=inc or exc;
+            }
+            next=cur;
+        }
+        return next[total/2];
+    }
+    bool canPartition(vector<int>& nums) {
+        int total=0;
+        for(int i=0;i < nums.size();i++){
+            total+=nums[i];
+        }
+        if(total % 2 != 0){
+            return 0;
+        }
+        return solve(nums,nums.size(),total);
+    }
