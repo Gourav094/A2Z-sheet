@@ -1,0 +1,123 @@
+Input: nums = [3,6,9,12]
+Output: 4
+Explanation:  The whole array is an arithmetic sequence with steps of length = 3.
+
+approach:
+Brute force is find all the substrings and find the max length among them
+Recusion can find the subsequences easily.
+Dry run this question again and again only then you will get to know
+eg-
+ 3 6 9 12 
+ i j
+ find the differnce b/w i and j . and search the same difference in previous array upto i 
+ lets undrestand better in code
+ 
+ //recursion
+ //Searching in back array upto ith
+ int solve(int i,int diff,vector<int>& nums){
+     //if i less than 0, we cant find difference
+        if(i < 0){
+            return 0;
+        }
+     //loop from ith to 0 index to find the longest subsequence 
+        int ans=0;
+        for(int j=i-1;j >= 0;j--){
+     //For being in AP it should have same difference
+            if(nums[i] - nums[j] == diff){
+      // call recursion from that j element so that now for j we can search element 
+                ans=max(ans,1+solve(j,diff,nums));
+            }
+        }
+        return ans;
+    }
+    
+    int longestArithSeqLength(vector<int>& nums) {
+        int n=nums.size();
+        if(n <= 2){
+            return n;
+        }
+        int ans=INT_MIN;
+   //Take two index and find thier difference and call for back searching
+        for(int i=0;i < nums.size();i++){
+            for(int j=i+1; j < nums.size();j++){
+                int diff=nums[j]-nums[i];
+                ans=max(ans,2+solve(i,diff,nums));
+            }
+        }
+        return ans;
+    }
+    //Memoization
+    
+    int solve(int i,int diff,vector<int>& nums, unordered_map<int,int>dp[]){
+        if(i < 0){
+            return 0;
+        }
+        if(dp[i].count(diff)){
+            return dp[i][diff];
+        }
+        int ans=0;
+        for(int j=i-1;j >= 0;j--){
+            if(nums[i] - nums[j] == diff){
+                ans=max(ans,1+solve(j,diff,nums,dp));
+            }
+        }
+        dp[i][diff]=ans;
+        return dp[i][diff];
+    }
+
+    int longestArithSeqLength(vector<int>& nums) {
+        int n=nums.size();
+        if(n <= 2){
+            return n;
+        }
+        unordered_map<int,int>dp[n+1];
+        int ans=INT_MIN;
+        for(int i=0;i < nums.size();i++){
+            for(int j=i+1; j < nums.size();j++){
+                int diff=nums[j]-nums[i];
+                ans=max(ans,2+solve(i,diff,nums,dp));
+            }
+        }
+        return ans;
+    }
+    //Tabulation
+    int longestArithSeqLength(vector<int>& nums) {
+        int n=nums.size();
+        if(n <= 2){
+            return n;
+        }
+        unordered_map<int,int>dp[n+1];
+        int ans=0;
+        for(int i=1;i < n;i++){
+            for(int j=0;j < i;j++){
+                int diff=nums[i]-nums[j];
+        //count is 2 bcoz minimum we have atleast 2 elements
+                int count=2;
+        //now find in the map if found then add 1 bcoz increased the subseqence size
+                if(dp[j].count(diff)){
+                    dp[i][diff]=1+dp[j][diff];
+                }
+        //if not found in the map then store only 2
+                else{
+                    dp[i][diff]=2;
+                }
+                ans=max(ans,dp[i][diff]);
+            }
+        }
+        
+        //We can use the condition from other prospective as well
+        /*
+        for(int i=1;i < n;i++){
+            for(int j=0;j < i;j++){
+                int diff=nums[i]-nums[j];
+                int count=1;
+                if(dp[j].count(diff)){
+                    count=dp[j][diff];
+                }
+                dp[i][diff]=1+count;
+                ans=max(ans,dp[i][diff]);
+            }
+        }
+        */
+        return ans;
+    }
