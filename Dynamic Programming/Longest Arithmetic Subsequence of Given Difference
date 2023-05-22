@@ -1,7 +1,11 @@
 Question is same as Longest AP
 here is the simple approach is that we can find the arr[i]-difference element in the previous array
 if found return 1+that elements ans
-
+Note:
+This question is also same as LIS 
+bcz In LIS we are finding  the element smaller than current in previous araay but here find the element with difference
+look at both's code you will understand better
+//LAS 
 class Solution {
 public:
     int longestSubsequence(vector<int>& arr, int difference) {
@@ -21,3 +25,31 @@ public:
         return ans;
     }
 };
+
+
+
+
+//LIS
+int dp[n];
+
+  // Initialize the table with 1s.
+  for (int i = 0; i < n; i++) {
+    dp[i] = 1;
+  }
+
+  // For each index, find the longest increasing subsequence ending at that index.
+  for (int i = 1; i < n; i++) {
+    for (int j = 0; j < i; j++) {
+      if (arr[i] > arr[j] && dp[j] + 1 > dp[i]) {
+        dp[i] = dp[j] + 1;
+      }
+    }
+  }
+
+  // Find the maximum value in the table.
+  int max_lis = 0;
+  for (int i = 0; i < n; i++) {
+    if (dp[i] > max_lis) {
+      max_lis = dp[i];
+    }
+  }
