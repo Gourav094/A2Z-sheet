@@ -1,0 +1,23 @@
+Question is same as Longest AP
+here is the simple approach is that we can find the arr[i]-difference element in the previous array
+if found return 1+that elements ans
+
+class Solution {
+public:
+    int longestSubsequence(vector<int>& arr, int difference) {
+        int n=arr.size();
+        int ans=0;
+        unordered_map<int,int>dp;
+        for(int i=0; i < n; i++){
+            int temp=arr[i]-difference;
+            int tempans=0;
+    //check ans temp element is in map or not
+            if(dp.count(temp)){
+                tempans=dp[temp];
+            }
+            dp[arr[i]]=1+tempans;
+            ans=max(ans,dp[arr[i]]);
+        }
+        return ans;
+    }
+};
