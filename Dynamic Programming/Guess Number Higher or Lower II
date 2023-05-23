@@ -1,0 +1,73 @@
+Input: n = 10
+Output: 16
+Explanation:
+IN this question we have to return 1 if we win the game after guessing right number
+but if we guess wrong number we will have to pay ith cost and we have to search in lower and higher part 
+
+approach:
+Lets suppose we are lossing at every step. So for n elemenets we have to find ans for every number by choosing one by one 
+in particular ans ==> haev to add ith(cost) and solve for left part(i-1) and right part(i+1 to e)
+
+//Recursion 
+class Solution {
+public:
+    int solve(int s,int e){
+        if(s >= e){
+            return 0;
+        }
+        int ans=INT_MAX;
+        for(int i=s;i <= e;i++){
+            int temp=i+max(solve(s,i-1),solve(i+1,e));
+            ans=min(ans,temp);
+        }
+        return ans;
+    }
+    int getMoneyAmount(int n) {
+        return solve(1,n);
+    }
+};
+//Memoization
+int solve(int s,int e,vector<vector<int>>&dp){
+        if(s >= e){
+            return 0;
+        }
+        if(dp[s][e] != -1){
+            return dp[s][e];
+        }
+        int ans=INT_MAX;
+        for(int i=s;i <= e;i++){
+            int temp=i+max(solve(s,i-1,dp),solve(i+1,e,dp));
+            ans=min(ans,temp);
+        }
+        dp[s][e]= ans;
+        return dp[s][e];
+    }
+    int getMoneyAmount(int n) {
+        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        return solve(1,n,dp);
+    }
+    //Tabultion
+    int solve(int n){
+        vector<vector<int>>dp(n+2,vector<int>(n+2,0));
+
+        for(int s=n;s >= 1;s--){
+            for(int e=s;e <= n;e++){
+                
+                if( s == e){
+                    continue;
+                }
+                else{
+                    int ans=INT_MAX;
+                    for(int i=s;i <= e;i++){
+                        ans=min(ans,i+max(dp[s][i-1],dp[i+1][e]));
+                    }
+                    dp[s][e]=ans;
+                }
+            }
+        }
+        return dp[1][n];
+    }
+    int getMoneyAmount(int n) {
+        
+        return solve(n);
+    }
