@@ -1,0 +1,59 @@
+Input: n = 3
+Output: 5
+Since this is binary search tree so i-1 numbers on left side and i+1 to n number on right side 
+since we need structurely unique means ==> no of unique combination will be Left*right
+
+Now we know the formula for find one unique tree combination so run the same for all nodes
+//Recursion
+int solve(int n){
+        if(n <= 1){
+            return 1;
+        }
+        int ans=0;
+        for(int i=1;i <= n;i++){
+            ans+=solve(i-1)*solve(n-i);
+        }
+        return ans;
+    }
+    int numTrees(int n) {
+        return solve(n);
+    }
+    // memoization
+    int solve(int n,vector<int>& dp){
+        if(n <= 1){
+            return 1;
+        }
+        if(dp[n] != -1){
+            return dp[n];
+        }
+        int ans=0;
+        for(int i=1;i <= n;i++){
+            ans+=solve(i-1,dp)*solve(n-i,dp);
+        }
+        dp[n]= ans;
+        return dp[n];
+    }
+    int numTrees(int n) {
+        vector<int>dp(n+1,-1);
+        return solve(n,dp);
+    }
+    //Tabulation
+    int solve(int n){
+        vector<int>dp(n+1,0);
+        dp[0]=dp[1]=1;
+        //i -> for number of nodes
+        for(int i=2;i <= n;i++){
+            //j-> for root node
+            for(int j=1;j <= i;j++){
+                dp[i]+=dp[j-1]*dp[i-j];
+            }
+        }
+
+        return dp[n];
+    }
+    int numTrees(int n) {
+        return solve(n);
+    }
+    //4th solution is Catlan number 
+    we just need to return catlan number of n 
+    just gooogle catlan number and its formula
