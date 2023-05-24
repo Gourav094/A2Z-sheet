@@ -1,0 +1,85 @@
+Input: prices = [7,1,5,3,6,4]
+Output: 7 ==> (5-1 + 6-3)
+Explanation:
+Since we have to select multiple buy and sell but we have to sell after buy
+So we can perform ine task maintain a varable bool to inform us to select or not
+Then we have to maximize our profit ==> 
+For a index if we buy we hve a choice buy or ignore 
+if buy not true then sell or ignore 
+why ignore ?? bcoz can take many times so maximize profit by taking every possibility like subsequece problem
+
+//Recursion
+int solve(int ind,bool buy,vector<int>& prices){
+        if(ind == prices.size()){
+            return 0;
+        }
+        int profit=0;
+        if(buy){
+            int take=(-prices[ind]+solve(ind+1,0,prices));
+            int ignore=0+solve(ind+1,1,prices);
+            profit+=max(take , ignore);
+        }
+        else{
+            int sell=prices[ind]+solve(ind+1,1,prices);
+            int ignore=0+solve(ind+1,0,prices);
+            profit+=max(sell,ignore);            
+        }
+        return profit;
+    }
+    int maxProfit(vector<int>& prices) {
+        return solve(0,1,prices);
+    }
+    
+    // Memoization
+    int solve(int ind,bool buy,vector<int>& prices,vector<vector<int>>&dp){
+        if(ind == prices.size()){
+            return 0;
+        }
+        int profit=0;
+        if(dp[ind][buy] != -1){
+            return dp[ind][buy];
+        }
+        if(buy){
+            int take=(-prices[ind]+solve(ind+1,0,prices,dp));
+            int ignore=0+solve(ind+1,1,prices,dp);
+            profit+=max(take , ignore);
+        }
+        else{
+            int sell=prices[ind]+solve(ind+1,1,prices,dp);
+            int ignore=0+solve(ind+1,0,prices,dp);
+            profit+=max(sell,ignore);            
+        }
+        dp[ind][buy]= profit;
+        return dp[ind][buy];
+    }
+    int maxProfit(vector<int>& prices) {
+        int n=prices.size();
+        vector<vector<int>>dp(n+1,vector<int>(2,-1));
+        return solve(0,1,prices,dp);
+    }
+    
+    //tabulation
+    int solve(vector<int>& prices){
+        int n=prices.size();
+        vector<vector<int>>dp(n+2,vector<int>(2,0));
+        
+        for(int ind=n-1;ind >=0 ;ind--){
+            for(int buy=0;buy <= 1;buy++){
+                if(buy){
+                    int take=(-prices[ind]+dp[ind+1][0]);
+                    int ignore=0+dp[ind+1][1];
+                    dp[ind][buy]+=max(take , ignore);
+                }
+                else{
+                    int sell=prices[ind]+dp[ind+1][1];
+                    int ignore=0+dp[ind+1][0];
+                    dp[ind][buy]+=max(sell,ignore);            
+                }
+            }
+        }
+        
+        return dp[0][1];
+    }
+    int maxProfit(vector<int>& prices) {
+        return solve(prices);
+    }
