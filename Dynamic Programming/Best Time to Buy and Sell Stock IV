@@ -1,0 +1,137 @@
+This question is same as buy and sell stock 3 just reokace with k instead of 2
+all approachees same
+//spacce
+class Solution {
+public:
+    int solve(vector<int>& prices,int k){
+        int n=prices.size();
+        
+        vector<vector<int>>cur(2,vector<int>(k+1,0));
+        vector<vector<int>>next(2,vector<int>(k+1,0));
+
+        for(int ind=n-1; ind >= 0;ind--){
+            for(int buy=0;buy <= 1;buy++){
+                for(int limit = 1;limit <= k;limit++){
+
+                    int profit=0;
+                    if(buy){
+                        int take=(-prices[ind]+next[0][limit]);
+                        int ignore=0+next[1][limit];
+                        profit=max(take , ignore);
+                    }
+                    else{
+                        int sell=prices[ind]+next[1][limit-1];
+                        int ignore=0+next[0][limit];
+                        profit=max(sell,ignore);            
+                    }
+
+                    cur[buy][limit]= profit;
+                }
+                next=cur;
+            }
+        }
+        return next[1][k];
+    }
+    int maxProfit(int k, vector<int>& prices) {
+        return solve(prices,k);
+    }
+};
+
+OR
+//solution using transaction number
+We have transaction buy and sell means transaction=2*k
+so run loop for transaction 
+
+//recursion
+int solve(vector<int>& prices,int ind,int operation,int k){
+        if(ind == prices.size()){
+            return 0;
+        }
+
+        if(operation == 2*k){
+            return 0;
+        }
+
+        int profit=0;
+
+        if(operation % 2 == 0){
+            int take=(-prices[ind]+solve(prices,ind+1,operation+1,k));
+            int skip=0+solve(prices,ind+1,operation,k);
+            profit=max(take , skip);
+        }
+        else{
+            int sell=prices[ind]+solve(prices,ind+1,operation+1,k);
+            int skip=0+solve(prices,ind+1,operation,k);
+            profit=max(sell,skip);            
+        }
+
+        return profit;
+    }
+    int maxProfit(int k, vector<int>& prices) {
+        return solve(prices,0,0,k);
+    }
+
+//memoization
+int solve(vector<int>& prices,int ind,int operation,int k,vector<vector<int>>&dp){
+        if(ind == prices.size()){
+            return 0;
+        }
+
+        if(operation == 2*k){
+            return 0;
+        }
+        if(dp[ind][operation] != -1){
+            return dp[ind][operation];
+        }
+        int profit=0;
+
+        if(operation % 2 == 0){
+            int take=(-prices[ind]+solve(prices,ind+1,operation+1,k,dp));
+            int skip=0+solve(prices,ind+1,operation,k,dp);
+            profit=max(take , skip);
+        }
+        else{
+            int sell=prices[ind]+solve(prices,ind+1,operation+1,k,dp);
+            int skip=0+solve(prices,ind+1,operation,k,dp);
+            profit=max(sell,skip);            
+        }
+
+        dp[ind][operation] = profit;
+        return dp[ind][operation];
+    }
+    int maxProfit(int k, vector<int>& prices) {
+        int n=prices.size();
+        vector<vector<int>>dp(n+1,vector<int>(2*k,-1));
+        return solve(prices,0,0,k,dp);
+    }
+    
+    //Tabulation
+    class Solution {
+public:
+    int solve(vector<int>& prices,int k){
+        int n=prices.size();
+        vector<vector<int>>dp(n+1,vector<int>(2*k+1,0));
+        
+        int profit=0;
+        for(int ind=n-1;ind >= 0;ind--){
+            for(int operation=2*k-1;operation >= 0;operation--){
+                if(operation % 2 == 0){
+                    int take=(-prices[ind]+dp[ind+1][operation+1]);
+                    int skip=0+dp[ind+1][operation];
+                    profit=max(take , skip);
+                }
+                else{
+                    int sell=prices[ind]+dp[ind+1][operation+1];
+                    int skip=0+dp[ind+1][operation];
+                    profit=max(sell,skip);            
+                }
+
+                dp[ind][operation] = profit;
+            }
+        }
+        return dp[0][0];
+    }
+    int maxProfit(int k, vector<int>& prices) {
+        return solve(prices,k);
+    }
+};
