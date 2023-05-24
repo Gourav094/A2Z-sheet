@@ -1,0 +1,33 @@
+Question is same as Best time to buy and sell stock 2 Just the differnce is after one transaction pay fee
+so we will substract fee from buy ya sell 
+All approaches are same so refer that part 
+
+//Tabulation
+class Solution {
+public:
+    int solve(vector<int>& prices,int fee){
+        int n=prices.size();
+        vector<vector<int>>dp(n+2,vector<int>(2,0));
+        
+        for(int ind=n-1;ind >=0 ;ind--){
+            for(int buy=0;buy <= 1;buy++){
+                if(buy){
+                    int take=(-prices[ind]+dp[ind+1][0]);
+                    int ignore=0+dp[ind+1][1];
+                    dp[ind][buy]+=max(take , ignore);
+                }
+                else{
+                    int sell=prices[ind]+dp[ind+1][1]-fee;
+                    int ignore=0+dp[ind+1][0];
+                    dp[ind][buy]+=max(sell,ignore);            
+                }
+            }
+        }
+        
+        return dp[0][1];
+    }
+    
+    int maxProfit(vector<int>& prices, int fee) {
+        return solve(prices,fee);
+    }
+};
