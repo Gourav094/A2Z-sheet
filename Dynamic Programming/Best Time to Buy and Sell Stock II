@@ -17,12 +17,12 @@ int solve(int ind,bool buy,vector<int>& prices){
         if(buy){
             int take=(-prices[ind]+solve(ind+1,0,prices));
             int ignore=0+solve(ind+1,1,prices);
-            profit+=max(take , ignore);
+            profit=max(take , ignore);
         }
         else{
             int sell=prices[ind]+solve(ind+1,1,prices);
             int ignore=0+solve(ind+1,0,prices);
-            profit+=max(sell,ignore);            
+            profit=max(sell,ignore);            
         }
         return profit;
     }
@@ -42,12 +42,12 @@ int solve(int ind,bool buy,vector<int>& prices){
         if(buy){
             int take=(-prices[ind]+solve(ind+1,0,prices,dp));
             int ignore=0+solve(ind+1,1,prices,dp);
-            profit+=max(take , ignore);
+            profit=max(take , ignore);
         }
         else{
             int sell=prices[ind]+solve(ind+1,1,prices,dp);
             int ignore=0+solve(ind+1,0,prices,dp);
-            profit+=max(sell,ignore);            
+            profit=max(sell,ignore);            
         }
         dp[ind][buy]= profit;
         return dp[ind][buy];
@@ -68,12 +68,12 @@ int solve(int ind,bool buy,vector<int>& prices){
                 if(buy){
                     int take=(-prices[ind]+dp[ind+1][0]);
                     int ignore=0+dp[ind+1][1];
-                    dp[ind][buy]+=max(take , ignore);
+                    dp[ind][buy]=max(take , ignore);
                 }
                 else{
                     int sell=prices[ind]+dp[ind+1][1];
                     int ignore=0+dp[ind+1][0];
-                    dp[ind][buy]+=max(sell,ignore);            
+                    dp[ind][buy]=max(sell,ignore);            
                 }
             }
         }
