@@ -55,8 +55,11 @@ int solve(string a,string b,int i,int j,vector<vector<int>>&dp){
         }
         return dp[0][0];
     }
-    
+    //same as tabulation
+//take two arrays and replace dp[i+1]=next , dp[i]=cur  
+//after every iteration cur and next moving so next = cur
     //Space optimisation
+
     int solve(string a,string b,int n,int m){
         
         vector<int>cur(m+1,0);
