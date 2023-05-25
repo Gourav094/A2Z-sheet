@@ -1,0 +1,76 @@
+We have to find the subsequence which is common and subsequence.
+we can find all subsequenec and match return which is longest.
+But we can solve by another way just find the common elements among two strings
+
+//Recusrsion
+int solve(string a,string b,int i,int j){
+        if(a.length() == i || b.length() == j){
+            return 0;
+        }
+        if(a[i] == b[j]){
+            return 1+solve(a,b,i+1,j+1);
+        }
+        else{
+            return max(solve(a,b,i+1,j),solve(a,b,i,j+1));
+        }
+        
+    }
+    
+//Memoization
+int solve(string a,string b,int i,int j,vector<vector<int>>&dp){
+        if(a.length() == i || b.length() == j){
+            return 0;
+        }
+        if(dp[i][j] != -1 ){
+            return dp[i][j];
+        }
+        if(a[i] == b[j]){
+           dp[i][j]= 1+solve(a,b,i+1,j+1,dp);
+        }
+        else{
+            dp[i][j]= max(solve(a,b,i+1,j,dp),solve(a,b,i,j+1,dp));
+        }
+        return dp[i][j];
+    }
+    int lcs(int x, int y, string s1, string s2)
+    {
+        // your code here
+        vector<vector<int>>dp(x+1,vector<int>(y+1,-1));
+        return solve(s1,s2,0,0,dp);
+    }
+    
+    //Tabulation
+    nt solve(string a,string b,int n,int m){
+        vector<vector<int>>dp(n+2,vector<int>(m+2,0));
+        
+        for(int i=n-1;i >= 0;i--){
+            for(int j=m-1;j >= 0;j--){
+                if(a[i] == b[j]){
+                   dp[i][j]= 1+dp[i+1][j+1];
+                }
+                else{
+                    dp[i][j]= max(dp[i+1][j],dp[i][j+1]);
+                }
+            }
+        }
+        return dp[0][0];
+    }
+    
+    //Space optimisation
+    int solve(string a,string b,int n,int m){
+        
+        vector<int>cur(m+1,0);
+        vector<int>next(m+1,0);
+        for(int i=n-1;i >= 0;i--){
+            for(int j=m-1;j >= 0;j--){
+                if(a[i] == b[j]){
+                   cur[j]= 1+next[j+1];
+                }
+                else{
+                    cur[j]= max(next[j],cur[j+1]);
+                }
+            }
+            next=cur;
+        }
+        return next[0];
+    }
