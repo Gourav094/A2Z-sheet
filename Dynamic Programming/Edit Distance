@@ -1,0 +1,154 @@
+Input: word1 = "horse", word2 = "ros"
+Output: 3
+Explanation: 
+horse -> rorse (replace 'h' with 'r')
+rorse -> rose (remove 'r')
+rose -> ros (remove 'e')
+
+Explanation:
+We just need to match bith string for this we can dob three operations and each operations cost 1 
+and return minimum cost 
+approacch :
+1. if ith and jth matches then just call rest of the string 
+2. else find solution by inserting ,deletion,replacing and store minimum out of them and return ans
+3. B.c ==> If a string is less b other then we just need to perform add operation (b.len-j) times so just return it or viceversa
+
+Note: i have solve this question from i = 0 to n-1 we can start from end as well
+
+//Recursion
+int solve(string& a,string& b,int i,int j){
+    //if a string is less then b ==> we have to add j character so just return b.length-j
+        if(i == a.length()){
+            return b.length()-j;
+        }
+    //if b string is less then a ==> we have to remove j character so just return a.length-i
+        if(j == b.length()){
+            return a.length() - i;
+        }
+        int ans=0;
+    //if string equal we dont need to apply any operation
+        if(a[i] == b[j]){
+            return solve(a,b,i+1,j+1);
+        }
+        else{
+            int insans=1 + solve(a,b,i,j+1);
+            int delans=1 + solve(a,b,i+1,j);
+            int repans=1 + solve(a,b,i+1,j+1);
+            ans=min(insans, min(delans,repans));
+        
+        }
+        return ans;
+    }
+
+    int minDistance(string word1, string word2) {
+        return solve(word1,word2,0,0);
+    }
+    
+    //Memoization
+    int solve(string& a,string& b,int i,int j,vector<vector<int>>& dp){
+        if(i == a.length()){
+            return b.length()-j;
+        }
+        if(j == b.length()){
+            return a.length() - i;
+        }
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+        int ans=0;
+        if(a[i] == b[j]){
+            
+            return solve(a,b,i+1,j+1,dp);
+        }
+        else{
+            int insans=1 + solve(a,b,i,j+1,dp);
+            int delans=1 + solve(a,b,i+1,j,dp);
+            int repans=1 + solve(a,b,i+1,j+1,dp);
+            ans=min(insans, min(delans,repans));
+        
+        }
+        dp[i][j]= ans;
+        return dp[i][j];
+    }
+
+    int minDistance(string word1, string word2) {
+        int n=word1.size();
+        int m=word2.size();
+        vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
+        return solve(word1,word2,0,0,dp);
+    }
+    
+    //Tabulation
+    int solve(string& a,string& b){
+        int n=a.length();
+        int m=b.length();
+        vector<vector<int>>dp(n+1,vector<int>(m+1,0));
+        for(int j=0;j < b.length();j++){
+            dp[a.length()][j]=b.length()-j;
+        }
+        for(int i=0;i < a.length();i++){
+            dp[i][b.length()]=a.length()-i;
+        }
+        for(int i=n-1;i >= 0;i--){
+            for(int j=m-1;j >= 0;j--){
+                int ans=0;
+                if(a[i] == b[j]){
+                    ans=dp[i+1][j+1];
+                }
+                else{
+                    int insans=1+dp[i][j+1];
+                    int delans=1+dp[i+1][j];
+                    int repans=1+dp[i+1][j+1];
+                    ans=min(insans,min(delans,repans));
+                }
+                dp[i][j]=ans;
+            }
+        }
+        return dp[0][0];
+    }
+    int minDistance(string word1, string word2) {
+        return solve(word1,word2);
+    }
+    
+    //Space optimisation
+    //change dp[i+1]=next , dp[i]=cur
+    int solve(string& a,string& b){
+        int n=a.length();
+        int m=b.length();
+        vector<int>cur(m+1,0);
+        vector<int>next(m+1,0);
+        //Bc - last row ke liye  
+        for(int j=0;j < b.length();j++){
+            next[j]=b.length()-j;
+        }
+        
+        for(int i=n-1;i >= 0;i--){
+            for(int j=m-1;j >= 0;j--){
+                //har row ka last element 
+                cur[b.length()]=a.length()-i;
+
+                int ans=0;
+                if(a[i] == b[j]){
+                    ans=next[j+1];
+                }
+                else{
+                    int insans=1+cur[j+1];
+                    int delans=1+next[j];
+                    int repans=1+next[j+1];
+                    ans=min(insans,min(delans,repans));
+                }
+                cur[j]=ans;
+            }
+            next=cur;
+        }
+        return next[0];
+    }
+    int minDistance(string word1, string word2) {
+        if(word1.size() == 0){
+            return word2.size();
+        }
+        else if(word2.size() == 0){
+            return word1.size();
+        }
+        return solve(word1,word2);
+    }
