@@ -1,0 +1,60 @@
+Input: num = "1432219", k = 3
+Output: "1219"
+Explanation: Remove the three digits 4, 3, and 2 to form the new number 1219 which is the smallest.
+
+approach:
+We have to delete k i.e we need to return the string containing n-k digit and smaller.
+case 1:
+increasing : 1 2 3 4 5  k = 2
+we need smaller element so we need to remove element from the last for minimum number i.e 1 2 3 will left 
+case 2 :
+decrasing : 5 4 3 2 1 k=2
+for r=minimum element we need to delete first two element i.e we will compare current element is greater then take another element
+
+Note: handle case for leading zero
+Steps:
+Take a stack store first element
+if next element is greater than cur then push 
+if smaller then pop and decrease k and push this element
+
+Code:
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        //if the size is less than k then simply return 0
+        if(num.length() <= k){
+            return "0";
+        }
+        string ans="";
+        stack<char>s;
+        s.push(num[0]);
+
+        for(int i=1;i < num.size();i++){
+            //if k is greater 0 and cur element is greater then next then remove cur
+            while(k > 0 && !s.empty() && s.top() > num[i]){
+                k--;
+                s.pop();
+            }
+            s.push(num[i]);
+            //remove leading zero
+            if(s.size() == 1 && num[i] == '0'){
+                s.pop();
+            }
+        }
+        //increasing order i.e 1 2 3 4 5 then remove k eleemnt fom last
+        while(k && !s.empty()){
+            s.pop();
+            k--;
+        }
+        //store in ans
+        while(!s.empty()){
+            ans.push_back(s.top());
+            s.pop();
+        }
+        reverse(ans.begin(),ans.end());
+        if(ans.size() == 0){
+            return "0";
+        }
+        return ans;
+    }
+};
