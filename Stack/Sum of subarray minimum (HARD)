@@ -1,0 +1,74 @@
+//Brute force
+
+#define mod 1000000007
+class Solution {
+public:
+    int sumSubarrayMins(vector<int>& arr) {
+        long long ans=0;
+        for(int i=0;i < arr.size();i++){
+            int mini=arr[i];
+            for(int j=i;j < arr.size();j++){
+                mini=min(mini,arr[j]) % mod;
+                ans+=mini % mod;
+            }
+        }
+        return ans%mod;
+    }
+};
+
+//Stack
+
+Here the approach is find left minimum and right minimum for every element ....why??
+Our task is to find the minimum sum of subarray then lets find the total subarray for a  element in which he is minimum
+So he is minimum in the subarray we not encounter the minimum element. so find left and right minimum and store in the array.
+now for a element total cases will be left[i] * right[i] * arr[i] find this for all element and return ans;
+
+Note:
+Total subarray for an element is n*(n+1) / 2
+#define mod 1000000007
+
+class Solution {
+public:
+    int sumSubarrayMins(vector<int>& arr) {
+        int n=arr.size();
+        vector<int>left(n,-1);
+        vector<int>right(n,n);
+        stack<int>s;
+        for(int i=0;i < n;i++){
+            while(!s.empty() && arr[i] < arr[s.top()]){
+                s.pop();
+            }
+            if(s.empty()){
+                left[i]=i+1;
+            }
+            else{
+                left[i]=i-s.top();
+            }
+            s.push(i);
+        }
+        while(!s.empty()){
+            s.pop();
+        }
+        for(int i=n-1;i >= 0;i--){
+            while(!s.empty() && arr[i] <= arr[s.top()]){
+                s.pop();
+            }
+            if(s.empty()){
+                right[i]=n-i;
+            }
+            else{
+                right[i]=s.top()-i;
+            }
+            s.push(i);
+        }
+
+        int ans = 0;
+        for(int i=0; i<n; i++)
+        {
+            long long temp = (left[i] * right[i]) % mod;
+            temp = (temp*arr[i]) % mod;
+            ans = (ans + temp) % mod;
+        }
+        return ans % mod;
+    }
+};
