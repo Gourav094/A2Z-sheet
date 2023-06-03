@@ -1,0 +1,78 @@
+#include <bits/stdc++.h>
+using namespace std;
+class Node{
+    public:
+    int data;
+    Node* next;
+    Node(int data){
+        this->data=data;
+        next=NULL;
+    }
+};
+
+class Queue{
+    public:
+    int size;
+    Node* head;
+    Node* tail;
+    public:
+    Queue(){
+        size=0;
+        head=NULL;
+        tail=NULL;
+    }
+    int getsize(){
+        return size;
+    }
+    bool is_empty(){
+        return size == 0;
+    }
+
+    int top(){
+        if(head == NULL){
+            cout<<"queue is empty ";
+            return -1;
+        }
+        return head->data;
+    }
+    void enqueue(int x){
+        Node* n=new Node(x);
+        if(head == NULL){
+            head=n;
+            tail=n;
+        }
+        else{
+            tail->next=n;
+            tail=n;
+        }
+        size++;
+    }
+    int dequeue(){
+        if(is_empty()){
+            cout<<"queue is empty ";
+            return -1;
+        }
+        size--;
+        int ans=head->data;
+        head=head->next;
+        return ans;
+    }
+
+};
+
+
+
+int main()
+{
+    Queue q;
+    q.enqueue(10);
+    q.enqueue(20);
+    q.enqueue(30);
+    cout<<q.dequeue()<<" ";
+    cout<< q.top()<<" ";
+    cout<<q.is_empty()<<" ";
+    cout<<q.dequeue()<<" ";
+    cout<<q.dequeue()<<" ";
+    cout<<q.dequeue()<<" ";
+    return 0;
+}
