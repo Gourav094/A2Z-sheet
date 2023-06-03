@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+class Node{
+    public:
+    int data;
+    Node* next;
+    Node(int data){
+        next=NULL;
+        this->data=data;
+    }
+};
+class Stack{
+    public:
+    Node* head;
+    int size=0;
+    Stack(){
+        size=0;
+        head=NULL;
+    }
+    int getsize(){
+        return size;
+    }
+    int isempty(){
+        return size == 0;
+    }
+    void push(int x){
+        Node* n=new Node(x);
+        n->next=head;
+        head=n;
+    }
+    int pop(){
+        if(head == NULL){
+            cout<<"Stack Empty"<<" ";
+            return -1;
+        }
+        int ans=head->data;
+        head=head->next;
+        size++;
+        return ans;
+    }
+};
+int main()
+{
+    Stack s1;
+    s1.push(10);
+    s1.push(20);
+    s1.push(30);
+    s1.push(40);
+    cout<< s1.pop();
+    cout<<endl;
+    cout<< s1.pop();
+    cout<< s1.pop();
+    cout<< s1.pop();
+
+    return 0;
+}
