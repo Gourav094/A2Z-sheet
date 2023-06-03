@@ -1,0 +1,69 @@
+#include <bits/stdc++.h>
+using namespace std;
+class Queue{
+    private:
+    int *data;
+    int first_index;
+    int next_index;
+    int size;
+    int capacity;
+    public:
+    Queue(int s){
+        size=0;
+        capacity=s;
+        data=new int[s];
+        first_index=-1;
+        next_index=0;
+    }
+    int getsize(){
+        return size;
+    }
+    bool is_empty(){
+        return size == 0;
+    }
+
+    int top(){
+        if(size == capacity){
+            cout<<" queue is full ";
+            return -1;
+        }
+        return data[first_index];
+    }
+    void enqueue(int x){
+        if(size == capacity){
+            cout<<" queue is full ";
+            return;
+        }
+        data[next_index]=x;
+        next_index=(next_index+1)%capacity;
+        size++;
+        if(first_index == -1){
+            first_index=0;
+        }
+    }
+    int dequeue(){
+        if(is_empty()){
+            cout<<"Queue is empty"<<" ";
+            return -1;
+        }
+        int ans=data[first_index];
+        first_index++;
+        size--;
+        return ans;
+    }
+
+};
+
+
+
+int main()
+{
+    Queue q(5);
+    q.enqueue(10);
+    q.enqueue(20);
+    q.enqueue(30);
+    cout<<q.dequeue()<<" ";
+    cout<< q.top()<<" ";
+    cout<<q.is_empty()<<" ";
+    return 0;
+}
