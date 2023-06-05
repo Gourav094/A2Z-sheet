@@ -1,0 +1,100 @@
+we need to add element in a queue and if the size exceeds the capacity delete the least used element and insert 
+the new element 
+implement get and put function
+["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"]
+[[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]
+Output
+[null, null, null, 1, null, -1, null, -1, 3, 4]
+
+Explanation
+LRUCache lRUCache = new LRUCache(2);
+lRUCache.put(1, 1); // cache is {1=1}
+lRUCache.put(2, 2); // cache is {1=1, 2=2}
+lRUCache.get(1);    // return 1
+lRUCache.put(3, 3); // LRU key was 2, evicts key 2, cache is {1=1, 3=3}
+lRUCache.get(2);    // returns -1 (not found)
+lRUCache.put(4, 4); // LRU key was 1, evicts key 1, cache is {4=4, 3=3}
+lRUCache.get(1);    // return -1 (not found)
+lRUCache.get(3);    // return 3
+lRUCache.get(4);    // return 4
+
+
+approach:
+take hashmap and doubly linked list
+While inserting the {key,val}pair consider the following
+
+Check if the {key,val} pair is already present in Cache.
+Check for the capacity. if the Cache size == capacity then while inserting the new pair remove the LRU
+and insert the new pair right after the head.while removing the node make sure to remove the {value, node} pair from the cache.
+If the key is not present in the Cache then return -1;
+
+//code
+class LRUCache {
+public:
+    class Node{
+        public:
+        int key;
+        int val;
+        Node* next;
+        Node* prev;
+        Node(int key,int val){
+            this->key=key;
+            this->val=val;
+        }
+    };
+    unordered_map<int,Node*>m;
+    Node* head=new Node(-1,-1);
+    Node* tail=new Node(-1,-1);
+    int size;
+    LRUCache(int capacity) {
+        size=capacity;
+        head->next=tail;
+        tail->prev=head;
+    }
+    void add(Node* new_node){
+        Node* temp=head->next;
+        new_node->next=temp;
+        new_node->prev=head;
+        head->next=new_node;
+        temp->prev=new_node;
+    }
+    void del(Node* node){
+        Node* next=node->next;
+        Node* prev=node->prev;
+        next->prev=prev;
+        prev->next=next;
+    }
+    int get(int key) {
+        if(m.find(key) != m.end()){
+            Node* temp=m[key];
+            int ans=temp->val;
+            m.erase(key);
+            del(temp);
+            add(temp);
+            m[key]=head->next;
+            return ans;
+        }
+        return -1;
+    }
+    
+    void put(int key, int val) {
+        if(m.find(key) != m.end()){
+            Node* temp=m[key];
+            m.erase(key);
+            del(temp);
+        }
+        if(m.size() == size){
+            m.erase(tail->prev->key);
+            del(tail->prev);
+        }
+        add(new Node(key,val));
+        m[key]=head->next;
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
