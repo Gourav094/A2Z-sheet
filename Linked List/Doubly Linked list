@@ -1,0 +1,84 @@
+Introduction
+n = 5
+arr = [1,2,3,4,5]
+Output:
+1 2 3 4 5
+Explanation: Linked list for the given array will be 1<->2<->3<->4<->5.
+class Solution {
+  public:
+    Node* constructDLL(vector<int>& arr) {
+        // code here
+        Node* head=new Node(arr[0]);
+        Node* tail=head;
+        
+        int i=1;
+        while(i < arr.size()){
+            Node* n=new Node(arr[i]);
+            tail->next=n;
+            n->prev=tail;
+            tail=n;
+            i++;
+        }
+        return head;
+    }
+};
+
+//Insert Node
+LinkedList: 2<->4<->5
+p = 2, x = 6 
+Output: 2 4 5 6
+Explanation: p = 2, and x = 6. So, 6 is inserted after p, i.e, at position 3
+void addNode(Node *head, int pos, int data)
+{
+   // Your code here
+        while(pos-- && head){
+            head=head->next;
+        }
+        Node* n=new Node(data);
+        n->prev=head;
+        n->next=head->next;
+        head->next=n;
+}
+
+// Delete node
+LinkedList = 1 <--> 3 <--> 4 
+x = 3
+Output: 1 3  
+Explanation: After deleting the node at position 3 (position starts from 1),the linked list will be now as 1->3.
+Node* deleteNode(Node *head, int x)
+    {
+      //Your code here
+        Node* temp=head;
+        if(x == 1){
+            return head->next;
+        }
+        while(x-1 > 1 && temp->next){
+              temp=temp->next;
+              x--;
+        }
+        Node* n=temp->next;
+        
+        if(n->next != NULL){
+            n->next->prev=temp;
+            
+        }
+        temp->next=n->next;
+        return head;
+    }
+    
+    //reverse
+    Node* reverseDLL(Node * head)
+{
+    //Your code here
+    Node* prev=NULL;
+    Node* cur=head;
+    Node* Next=head;
+    while(Next != NULL){
+        Next=Next->next;
+        cur->next=prev;
+        cur->prev=Next;
+        prev=cur;
+        cur=Next;
+    }
+    return prev;
+}
