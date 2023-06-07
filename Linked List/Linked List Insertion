@@ -1,0 +1,35 @@
+LinkedList: 9->0->5->1->6->1->2->0->5->0
+Output: 5 2 9 5 6
+Explanation:
+Length of Link List = N = 5
+9 0 indicated that 9 should be inserted in the beginning.
+Modified Link List = 9.
+5 1 indicated that 5 should be inserted in the end. Modified Link List = 9,5.
+
+class Solution{
+  public:
+    //Function to insert a node at the beginning of the linked list.
+    Node *insertAtBegining(Node *head, int x) {
+       // Your code here
+       Node* temp=new Node(x);
+       temp->next=head;
+       head=temp;
+       return head;
+    }
+    
+    
+    //Function to insert a node at the end of the linked list.
+    Node *insertAtEnd(Node *head, int x)  {
+       // Your code here
+        Node* n=new Node(x);
+        Node* temp=head;
+       if(head == NULL){
+           return n;
+       }
+       while(temp->next){
+           temp=temp->next;
+       }
+       temp->next=n;
+       return head;
+    }
+};
