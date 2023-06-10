@@ -1,0 +1,42 @@
+class Solution
+{
+    public:
+    Node* reverseList(Node* head) {
+        if(head==NULL){
+            return head;
+        }
+        Node * prev=NULL;
+        while(head!=NULL){
+            Node * next=head->next;
+            head->next=prev;
+            prev=head;
+            head=next;
+        }
+        return prev;
+    }
+    Node* addOne(Node *head) 
+    {
+        // Your Code here
+        // return head of list after adding one
+        Node* list=reverseList(head);
+        Node* ans=list;
+       
+        int sum=0;
+        int carry=1;
+        Node* temp=NULL;
+        while(list){
+            sum=carry + list->data ;
+            
+            carry = sum >= 10 ? 1 : 0;
+            
+            sum = sum % 10;
+            list->data=sum;
+            temp=head;
+            list=list->next;
+        }
+        if (carry > 0) 
+            temp->next = new Node(carry);
+        
+        return reverseList(ans);
+    }
+};
