@@ -1,0 +1,38 @@
+Input: head = [3,2,0,-4], pos = 1
+Output: tail connects to node index 1
+Explanation: There is a cycle in the linked list, where tail connects to the second node.
+
+return the starting point of linked list of loop
+
+Approach:
+
+We can store nodes in a hash table so that, if a loop exists, the head will encounter the same node again. 
+This node will be present in the table and hence, we can detect the loop.
+
+approach 2
+-take two pointers, fast and slow. The fast pointer takes two steps ahead while the slow pointer will take a single steps
+-We know that if a cycle exists, fast and slow pointers will collide.
+-Else, when both slow and fast pointer collides, it detects a cycle exists.
+-Take another pointer, say entry. Point to the very first of the linked list.
+-Move the slow and the entry pointer ahead by single steps until they collide. 
+
+ListNode *detectCycle(ListNode *head) {
+        if(head == NULL || head->next == NULL){
+            return NULL;
+        }
+        ListNode* fast=head;
+        ListNode* slow=head;
+        ListNode* temp=head;
+        while(fast->next && fast->next->next){
+            fast=fast->next->next;
+            slow=slow->next;
+            if(slow == fast){
+                while(temp != slow){
+                    temp=temp->next;
+                    slow=slow->next;
+                }
+                return slow;
+            }
+        }
+        return NULL;
+    }
