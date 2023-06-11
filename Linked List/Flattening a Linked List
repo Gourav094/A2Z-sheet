@@ -1,0 +1,50 @@
+Input:
+5 -> 10 -> 19 -> 28
+|     |     |     | 
+7     20    22   35
+|           |     | 
+8          50    40
+|                 | 
+30               45
+Output:  5-> 7-> 8- > 10 -> 19-> 20->
+22-> 28-> 30-> 35-> 40-> 45-> 50.
+Explanation:
+The resultant linked lists has every node in a single level.
+(Note: | represents the bottom pointer.)
+resultant node next value stored in bottom pointer not in next
+
+Approach: idea is 
+Take two list recursively and merge them according to bottom value 
+
+code:
+Node *MergeList(Node* a,Node* b){
+    Node* temp=new Node(0);
+    Node* ans=temp;
+    while(a != NULL && b!= NULL){
+        if(a->data < b->data){
+            temp->bottom=a;
+            a=a->bottom;
+        }
+        else{
+            temp->bottom=b;
+            b=b->bottom;
+        }
+        temp=temp->bottom;
+    }
+    if(a != NULL){
+        temp->bottom=a;
+    }
+    else{
+        temp->bottom=b;
+    }
+    return ans->bottom;
+}
+Node *flatten(Node *root)
+{
+   // Your code here
+   if(!root || !root->next){
+       return root;
+   }
+   root->next=flatten(root->next);
+   return MergeList(root,root->next);
+}
