@@ -1,0 +1,105 @@
+approach 1: hashmap
+1.create a map pointing to original nodes
+2. traverse the head with add next and random pointer of map node just like head node 
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        unordered_map<Node*,Node*>m;
+        Node* temp=head;
+        while(temp){
+            m[temp]=new Node(temp->val);
+            temp=temp->next;
+        }
+        temp=head;
+        while(temp){
+            m[temp]->next=m[temp->next];
+            m[temp]->random=m[temp->random];
+            temp=temp->next;
+        }
+        return m[head];
+    }
+};
+approach 2: 
+
+class Solution {
+public:
+    unordered_map<Node*, Node*> m;
+
+    Node* dfs(Node* node){
+        if(!node) return NULL;
+
+        if(m.find(node) != m.end()) return m[node];
+
+        Node* newNode = new Node(node->val);
+        m[node] = newNode;
+
+        newNode->next = dfs(node->next);
+        newNode->random = dfs(node->random);
+        return newNode;
+    }
+
+    Node* copyRandomList(Node* head) {
+        return dfs(head);
+    }
+};
+
+approach 3:
+
+steps:
+1. create a map containing list 
+2. create a copied map that pointes to random node and creare new list
+3. traverse head and create random pointer of new list
+class Solution {
+public:
+    Node* buildList(Node*& realhead,int counter,unordered_map<int,Node*>& copied){
+        if(realhead==NULL) return NULL;
+
+        Node* newNode=new Node(realhead->val);
+        copied[counter]=newNode;
+
+        Node* smallAns=buildList(realhead->next,counter+1,copied);
+        newNode->next=smallAns;
+
+        return newNode;
+    }
+
+    Node* copyRandomList(Node* head) {
+        if(head==NULL) return NULL;
+
+        unordered_map<Node*,int> mainList;
+        Node* temp=head;
+        int counter=0;
+
+        while(temp!=NULL){
+            mainList[temp]=counter++;
+            temp=temp->next;
+        }
+        delete temp;
+
+        unordered_map<int,Node*> copied;
+        Node* ans=buildList(head,0,copied);
+        
+        Node* temp1=head;
+        Node* temp2=ans;
+
+        while(temp1!=NULL){
+            if(temp1->random==NULL){
+                temp2->random=NULL;
+            }
+            else{
+                int value=mainList[temp1->random];
+                temp2->random=copied[value];
+            }
+
+            temp1=temp1->next;
+            temp2=temp2->next;
+        }
+
+        return ans;
+    }
+};
+
+
+
+
