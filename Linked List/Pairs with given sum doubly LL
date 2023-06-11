@@ -1,0 +1,25 @@
+vector<pair<int, int>> findPairsWithGivenSum(Node *head, int target)
+    {
+        // code here
+        vector<pair<int,int>>ans;
+        Node* last=head;
+        Node* cur=head;
+        while(last->next != NULL){
+            last=last->next;
+        }
+        while(cur != NULL && last != cur){
+            int sum=cur->data + last->data;
+            if(sum < target){
+                cur=cur->next;
+            }
+            else if(sum > target){
+                last=last->prev;
+            }
+            else{
+                ans.push_back({cur->data,last->data});
+                cur=cur->next;
+            }
+        }
+        return ans;
+        
+    }
