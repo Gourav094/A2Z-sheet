@@ -38,6 +38,8 @@ class Solution
     void buildHeap(int arr[], int n)  
     { 
     // Your Code Here
+    // we use a loop from n/2 to 0 bcoz after this elemets belong to leaf node i.e they are already valid
+    //heapify maiintain the heap property staring from last node i.e n/2 to 0
         for(int i=n/2;i >= 0;i--){
             heapify(arr,n,i);
         }
