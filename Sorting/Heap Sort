@@ -51,7 +51,11 @@ class Solution
     void heapSort(int arr[], int n)
     {
         //code here
+        //make heap from given elements
         buildHeap(arr,n);
+        //now the heap is max means larger element must be on top
+        //swap the first and last element and heapify left array
+        //now the larger element getting stored in end means generating in increasing order
          for(int i=n-1; i>=1; --i) {
             swap(arr[0], arr[i]);
             heapify(arr, i, 0);
