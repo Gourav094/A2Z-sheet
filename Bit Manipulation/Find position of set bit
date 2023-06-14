@@ -1,0 +1,20 @@
+We have to return the position of set bit a number that contain only one set bit .
+approach:
+we know ==> the number which are only divisble by 2 contain only one set bit other have set bit greater than one 
+so count the position using loop
+code:
+int findPosition(int N) {
+        // code here
+        if(N == 0){
+            return -1;
+        }
+        if((N & (N-1)) == 0){     
+            int ans=0;
+            while(N){
+                    ans++;
+                    N=N>>1;
+            }
+            return ans;
+        }
+        else return -1;
+    }
