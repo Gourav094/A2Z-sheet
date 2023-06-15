@@ -1,0 +1,26 @@
+steps:
+1. find len for iterating i.e 2^n -1
+2. now place the character which index has set bit 
+3. sort the array for correct output
+
+vector<string> AllPossibleStrings(string s){
+		    // Code here
+		    vector<string>ans;
+		    int n=s.size();
+		    int len=(1 << n);
+		    for(int i=1;i < len;i++){
+		        int set=i;
+		        int j=0;
+		        string temp="";
+		        while(set){
+		            if(set & 1){
+		                temp=temp+s[j];
+		            }
+		            j++;
+		            set=set >> 1;
+		        }
+		        ans.push_back(temp);
+		    }
+		    sort(ans.begin(),ans.end());
+		    return ans;
+		}
