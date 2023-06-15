@@ -1,0 +1,18 @@
+/logic....
+we have to set ith bit and rest all the bits will be same 
+we can use OR operation with 1 at kth index
+it will keep the ith place always one and remains same rest\
+
+e.g -- 
+8    --> 1 0 0 0  
+i=2
+mask --> 0 1 0 0 
+OR   --> 1 1 0 0 
+
+code:
+int setKthBit(int N, int K)
+    {
+        // Write Your Code here
+        int mask = 1 << K;
+        return (N | mask);
+    }
