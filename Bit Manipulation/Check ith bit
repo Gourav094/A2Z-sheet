@@ -1,0 +1,18 @@
+We have to check ith bit is set or not .
+e.g -- 
+we need one at ith place so that all will become zero using rest zero and ith chacter will remains same due to one called it a mask
+and do and operation with mask  
+n = 13 ==> 1 1 0 1
+i = 2;
+mask  ==>  0 1 0 0
+  &   ==>  0 1 0 0    != 0 means its not set bit return false
+
+code:
+bool checkKthBit(int n, int k)
+    {
+        int mask = 1 << k;
+        if((n & mask) != 0){
+            return true;
+        } 
+        else return false;
+    }
