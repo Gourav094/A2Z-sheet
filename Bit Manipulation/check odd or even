@@ -1,0 +1,11 @@
+even number has rightmost bit alwasy 0 and odd number has always 1
+e.g-->
+2 -- > 10
+3 -- > 11
+string oddEven(int N){
+        // code here 
+        if((N & 1) == 0){
+            return "even";   
+        }
+        else return "odd";
+    }
