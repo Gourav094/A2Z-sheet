@@ -1,0 +1,15 @@
+Logic:
+since every number repeating twice and one number is unique
+means when we find the xor of every element .we will left with only one element that is unique
+bcoz xor -- >
+same element - 0
+different element - 1
+
+code:
+int singleNumber(vector<int>& nums) {
+        int ans=0;
+        for(int i=0;i < nums.size();i++){
+            ans=ans ^ nums[i];
+        }
+        return ans;
+    }
