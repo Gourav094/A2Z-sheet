@@ -1,0 +1,17 @@
+For a number to be power of 2 --> number and number-1 always give 0 on and operation
+e.g-
+8 -- 1 0 0 0 
+7 -- 0 1 1 1 
+& -- 0 0 0 0 
+ bool isPowerofTwo(long long n){
+        
+        // Your code here   
+        if(n == 0){
+            return false;
+        }
+        int a= n & (n-1);
+        if(a == 0){
+            return true;
+        }
+        else return false;
+    }
