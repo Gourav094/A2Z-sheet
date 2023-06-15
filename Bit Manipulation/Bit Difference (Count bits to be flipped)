@@ -1,0 +1,25 @@
+Input: A = 10, B = 20
+Output: 4
+Explanation:
+A  = 01010
+B  = 10100
+As we can see, the bits of A that need to be flipped are 0101
+
+we need to check the count of different bit in between two to covert A to B. means use XOR operator
+steps: 1. XOR A and B
+2. count number of set  bits
+
+code:
+int countBitsFlip(int a, int b){
+        
+        // Your logic here
+        int ans=0;
+        int num = a ^ b;
+        while(num != 0){
+            if(num & 1){
+                ans++;
+            }
+            num=num >> 1;
+        }
+        return ans;
+    }
