@@ -1,0 +1,24 @@
+Input:             Output:
+N = 6                7
+
+Explanation:
+The binary representation of 6 is 110. After setting right most bit it becomes 111 which is 7.
+
+logic:
+we need one at right 0 so take next num and find OR so that evry number will be same and that number will alwasy one
+if N & N+1   is zero then print n  i.e If a number has all one then OR operation give wrong num so print n in that case.
+
+13 - 1 1 0 1
+14 - 1 1 1 0
+OR - 1 1 1 1   ==> 15
+
+
+code:
+int setBit(int N)
+    {
+        // Write Your Code here
+        if((N & (N+1))  == 0){
+            return N;
+        }
+        return N | (N+1);
+    }
