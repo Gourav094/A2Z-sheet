@@ -1,0 +1,23 @@
+Input: n = 2
+Output: [0,1,1]
+Explanation:
+0 --> 0
+1 --> 1
+2 --> 10
+approach:
+we can print the all counts using loop and count the set bit for every number ans simp,ky store the output
+approach2:
+use bitset :
+Bitset <size>name(decimal number);
+it will store the binary representation of decimal number and use inbuilt count function to count all the set bits.
+class Solution {
+public:
+    vector<int> countBits(int n) {
+        vector<int>ans(n+1,0);
+        for(int i=0;i <= n;i++){
+            bitset<32>arr(i);
+            ans[i]=arr.count();
+        }
+        return ans;
+    }
+};
