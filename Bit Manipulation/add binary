@@ -1,0 +1,32 @@
+Input: a = "11", b = "1"
+Output: "100"
+
+Start from end digit and add both digit in carry
+now we need to add (carry % 2) in ans and carry will be carry /2
+
+Approach :
+- We start at the right end of each binary number, adding the digits and any carry-over value, and storing the result in a new string.
+- Now we move to the next digit on the left and repeats the process until it has gone through all the digits in both binary numbers.
+- If there is any carry-over value after adding all the digits, append it to the end of the new string.
+- Finally, the new string is reversed and returned as the sum of the two binary numbers.
+
+code:
+string addBinary(string a, string b) {
+        int carry=0;
+        string ans;
+        int i=a.length()-1;
+        int j=b.length()-1;
+        while(i >= 0 || j >= 0 || carry){
+            if(i >= 0){
+                carry+=a[i--]-'0';
+            }
+            if(j >= 0){
+                carry+=b[j--]-'0';
+            }
+
+            ans+=carry % 2 + '0';
+            carry=carry/2;
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
