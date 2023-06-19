@@ -1,0 +1,28 @@
+Lets say an example
+if last digit of array is not 9 then just add one and return the array
+but if its 9 we need to replace it with zero and at the end add one to front 
+e.g-
+123 --> 124
+99 --> 100
+# Code
+```
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+        int n=digits.size();
+        for(int i=n-1;i >= 0;i--){
+            if(digits[i] == 9){
+                digits[i]=0;
+
+            }
+            else{
+                digits[i] += 1;
+                return digits;
+            }
+        }
+        digits.push_back(0);
+        digits[0]=1;
+        return digits;
+    }
+};
+```
