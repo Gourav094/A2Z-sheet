@@ -1,0 +1,22 @@
+Since we have to check how many bits are different.
+Xor operator will be better to use in same and different bits case
+So Xor of them and find how many bits are one using AND
+BCOZ:
+XOR --> same - zero
+differene- one
+
+Code
+class Solution {
+public:
+    int hammingDistance(int x, int y) {
+        int temp=x ^ y;
+        int ans=0;
+        while(temp){
+            if(temp & 1){
+                ans++;
+            }
+            temp=temp >> 1;
+        }
+        return ans;
+    }
+};
