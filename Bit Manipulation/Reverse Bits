@@ -1,0 +1,18 @@
+class Solution {
+public:
+    uint32_t reverseBits(uint32_t n) {
+        uint32_t ans=0;
+      //Convert 1 to 31 bits 
+        for(int i=0;i < 31;i++){
+      //if it is one then add one
+            if(n & 1){
+                ans += 1;
+            }
+      //shift both ans and n
+            ans=ans<<1;
+            n=n>>1;
+        }
+      //maintain last bit i.e 32th bit 
+        return ans + (n & 1);
+    }
+};
