@@ -1,0 +1,95 @@
+Intuition
+We need to find the number of connected components.
+connected components means in that graph all the vertex are reachable from one vertex.
+We can apply BFS/DFS to solve this problem.
+
+Approach
+Lets solve this problem using DFS.
+DFS search till depth of a node. Hence we can just call DFS for unvisited node and incriment count whenever we call DFS.
+
+For example we have 3 connected componenets in the graph G i.e. G1,G2,G3. G1 , G2, G3 are not connected to any other components.
+
+Let a,b,c belongs to G1.
+Let d,e,f,g belongs to G2.
+Let h,i belongs to G3.
+
+a,b,c are connected to each other directly or indirectly same for d,e,f,g and h,i.
+we will call dfs for G1 it will go for all node and mark the visited .similarly we call dfs for G2 and G3 .
+Here we called DFS func for 3 times
+So and would be 3.
+
+Complexity
+Time complexity: O(n)+O(V+2E)
+Here v --> No of vertex
+E --> No of edges
+
+Space complexity:O(n)
+DFS Code
+class Solution {
+public:
+    void DFS(vector<int> adj[],int Node,vector<bool>& vis){
+        vis[Node]=1;
+        for(auto it:adj[Node]){
+            if(!vis[it]){
+                DFS(adj,it,vis);
+            }
+        }
+    }
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n=isConnected.size();
+        vector<int>adj[n];
+        for(int i=0; i < n;i++){
+            for(int j=0;j < n;j++){
+                if(isConnected[i][j]){
+                    adj[i].push_back(j);
+                    adj[j].push_back(i);
+                }
+            }
+        }
+        vector<bool>vis(n,0);
+        int count=0;
+        for(int i=0; i < n;i++){
+            if(vis[i] == 0){
+                count++;
+                DFS(adj,i,vis);
+            }
+        }
+        return count;
+    }
+};
+BFS Code
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size();
+        vector<int>adj[n];
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<n;j++){
+                if(isConnected[i][j]){
+                adj[i].push_back(j);
+                adj[j].push_back(i);
+                }
+            }
+        }
+        vector<bool>vis(n,0);
+        int ans= 0;
+        for(int i = 0;i<n;i++){
+            if(!vis[i]){
+                ans++;
+                queue<int>q;
+                q.push(i);
+                while(!q.empty()){
+                    int node = q.front();
+                    q.pop();
+                    vis[node] = 1;
+                    for(auto child:adj[node]){
+                        if(!vis[child]){
+                            q.push(child);
+                        }
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
