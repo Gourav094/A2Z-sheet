@@ -1,0 +1,63 @@
+Rabin Karp algorithm :
+
+1.find hash value for target string
+2.find the hash of m size in txt string
+3.Now compare both hash if matches then compare characters
+4.else slide the window i.e remove hash value for first character and hash value
+for next character (just like sliding window technique)
+
+Hash :
+txt: c c a c a e d b a
+pattern : d b a
+hash: 4 * pow(10,n-1) + 2 * pow(10,n-2) + 1 * pow(10,n-3)
+
+Here in hash function we use ascii value and power of 10 but we can use anything in order to rmeove redundency and collisons
+Code
+#define mod 1000000;
+class Solution {
+public:
+    int RabinKarp(string txt,string pattern){
+        if(txt == "" || pattern == ""){
+            return -1;
+        }
+        int n=txt.size();
+        int m=pattern.size();
+    //Calculate power for hash function p=pow(31,m-1)
+        int power=1;
+        for(int i=0;i < m;i++){
+            power=(power*31) % mod;
+        }
+    //Find hash function for target string
+        int targetcode=0;
+        for(int i=0;i < m;i++){
+            targetcode=(targetcode*31 + pattern[i]) % mod;
+        }
+    //make window of size m
+    //Compare hash for both string and slide the window
+
+        int hashcode=0;
+        for(int i=0;i < n;i++){
+        //hashnode for adding ith element to window 
+            hashcode=(hashcode*31 + txt[i]) % mod;
+            //if window smaller just make m size window so do nothing
+            if(i < m-1){
+                continue;
+            }
+            //if size of window exceeds then remove first element hash value
+            if(i >= m){
+                hashcode=(hashcode - txt[i-m]*power) % mod;
+                //if hashvalue going to negative then just add some bigger value
+                if(hashcode < 0){
+                    hashcode += mod;
+                }
+            }
+            // if hashcode for both string matches then just compare the characters
+            if(hashcode == targetcode){
+                if(txt.substr(i-m+1,m) == pattern){
+                    return i-m+1;
+                }
+            }
+
+        }
+        return -1;
+    }
