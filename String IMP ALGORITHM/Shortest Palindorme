@@ -1,0 +1,71 @@
+This problem asks us to add string before the input so the result string will be a palindrome.
+We can convert it to an alternative problem"find the longest palindrome substring starts from index 0".
+If we can get the length of such substring, then we can easily build a palindrome string by inserting 
+the reverse part of substring after such substring before the original string.
+
+Find the longest palindromic substring and remove it and reverse the left string and add that string to before s.
+E.g-->
+input string:
+abacd
+
+longest palindrome substring starts from 0:
+aba
+Left string(temp) == cd 
+reverse and add => dc aba cd 
+this is the final output
+
+code:
+
+We can solve it by using a trick + KMP.
+
+s + "#" + reverse(s)
+Then we run KMP on it, the value in last cell will be our solution. In this problem, we don't need to use KMP
+to match strings but instead we use the lookup table in KMP to find the palindrome.
+
+We add "#" here to force the match in reverse(s) starts from its first index
+Example:
+input:
+catacb
+Temp String:
+catacb # bcatac
+
+KMP table:
+c a t a c b # b c a t a c
+0 0 0 0 1 0 0 0 1 2 3 4 5
+
+In the last cell, we got a value 5. It means in s we have a substring of length 5 that is palindrome.
+
+So, above is my understanding of KMP any solution towards this problem.
+//this function will create a look up table 
+void LPS(vector<int>& lps,string s){
+        int n=s.length();
+        int i=1,j=0;
+        while(i < n){
+            if(s[i] == s[j]){
+                j++;
+                lps[i++]=j;
+            }
+            else{
+                if(j == 0){
+                    lps[i]=0;
+                    i++;
+                }
+                else{
+                    j=lps[j-1];
+                }
+            }
+        }
+    }
+    string shortestPalindrome(string s) {
+        string st=s;
+        reverse(st.begin(),st.end());
+        string T=s + "#" + st;
+        int len=T.length();
+        vector<int>lps;
+        LPS(lps,T);
+
+        int ind=lps[len];
+        string temp = s.substr(ind);
+        reverse(temp.begin(),temp.end());
+        return temp + s;
+    }
