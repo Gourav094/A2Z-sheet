@@ -1,0 +1,40 @@
+vector <int> search(string pat, string txt)
+        {
+            //code hee.
+            int n=pat.length();
+            int m=txt.length();
+            
+            int i=0;
+            
+            string new_s = pat + "#" + txt;
+            
+            vector<int>Z;
+            
+            while( i < new_s.length()){
+                if(i <= n){
+                    Z.push_back(0);
+                }
+                else{
+                    int left=0,right=0;
+                    if(new_s[left] == new_s[i]){
+                        right=i;
+                        while(new_s[left] == new_s[right] && (right < new_s.size())){
+                            left++;
+                            right++;
+                        }
+                    }
+                    Z.push_back(left);
+                }   
+                i++;
+            }
+            
+            vector<int>ans;
+            
+            for(int i=0;i < new_s.length();i++){
+                if(Z[i] == n){
+                    ans.push_back(i - n);
+                }
+            }
+            
+            return ans;
+        }
