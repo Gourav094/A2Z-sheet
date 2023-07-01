@@ -1,0 +1,57 @@
+For explanation for this code ==> checkout shortest palindrome in this file
+class Solution{   
+public:
+    vector<int> KMP(string s){
+        int j=0,i = 1;
+        int n=s.length();
+        vector<int>lps(n);
+        while( i < n){
+            if(s[i] == s[j]){
+                j++;
+                lps[i++] = j;
+            }
+            else{
+                if(j == 0){
+                    lps[i]=0;
+                    i++;
+                }
+                else{
+                    j = lps[j-1];
+                }
+            }
+        }
+        return lps;
+    }
+    int findLastOccurence(string A,string B){
+        //Code Here
+        int n=A.length();
+        int m=B.length();
+        
+        int ans=-1; 
+        
+        vector<int>lps = KMP(B);
+        
+        int i=0,j=0;
+        while(i < n){
+            
+            if(A[i] == B[j]){
+                i++;
+                j++;
+                
+                if(j == m){
+                    ans=i-m;
+                    j=lps[j-1];
+                }   
+            }
+            else{
+                if(j != 0){
+                    j=lps[j-1];
+                }
+                else{
+                    i++;
+                }
+            }
+        }
+        return (ans == -1 ) ? ans:ans + 1;
+    }
+};
