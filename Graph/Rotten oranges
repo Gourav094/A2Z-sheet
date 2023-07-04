@@ -1,0 +1,75 @@
+Intuition
+We need to find the time to rot all oranges.
+one rot orange can changes other neighbours at one unit time.
+Since Each time vary with thier levels. SO lets solve this probem using BFS.
+
+Approach
+Steps:
+
+Insert all rot oranges index in queue and make them visited . And mark other element not visited.
+Note:
+maintain count of fresh orange so that if all fresh oranges are not rotted we can return -1.
+
+Now for every element in queue check thier neighbour(4 side) for fresh oranges and add in the queue with thier increase time.
+
+Now return time if all frsh orange are traversed.
+
+Complexity
+Time complexity:O(n*m)
+Space complexity:O(n*m)
+Code
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+// queue will store index with time -> {i,j},time
+        queue<pair<pair<int,int>,int>>q;
+        int vis[n][m];
+        int freshcount=0;
+// all rotted oranges are pushed in queue
+        for(int i=0;i < n;i++){
+            for(int j=0;j < m;j++){
+                if(grid[i][j] == 2){
+                    q.push({{i,j},0});
+                    vis[i][j]=1;
+                }
+                else{
+                    vis[i][j]=0;
+                }
+                if(grid[i][j] == 1){
+                    freshcount++;
+                }
+            }
+
+        }
+        int time=0;
+        //Lets make a row and col array to move all sides 
+        int row[]={-1,0,+1,0};
+        int col[]={0,1,0,-1};
+        int count=0;
+        while(!q.empty()){
+            int r=q.front().first.first;
+            int c=q.front().first.second;
+            int t=q.front().second;
+    //check all direction for fresh orange        
+            time=max(time,t);
+            q.pop();
+            for(int i=0;i < 4;i++){
+                int nrow=r+row[i];
+                int ncol=c+col[i];
+                if((nrow >= 0 && nrow < n) && (ncol >= 0 && ncol < m) && (vis[nrow][ncol]==0) && (grid[nrow][ncol] == 1)){
+                    q.push({{nrow,ncol},t+1});
+                    vis[nrow][ncol]=1;
+                    count++;
+                }
+            }
+
+        }
+// if there is fresh orange then return -1
+        if (count < freshcount){
+            return -1;
+        }
+        return time;
+    }
+};
