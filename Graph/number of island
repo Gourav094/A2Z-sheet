@@ -1,0 +1,52 @@
+Intuition
+We just need to count the number of island i.e connect 1's
+simply call BFS/DFS for every unvisited element
+
+Approach
+Lets solve this probelm using DFS.
+
+Call DFS for every unvisited 1's node (bcoz we need only 1)
+DFS will mark to visited to all connected node
+So DFS will be called for all connected ones ==> this is our ans
+ans - > count when dfs call occurs
+Code
+class Solution {
+public:
+
+    void DFS(int row,int col,vector<vector<char>>& grid,vector<vector<int>>&vis){
+        
+        vis[row][col]=1;
+      
+        int n=grid.size();
+        int m=grid[0].size();
+        
+        int r[]={-1,0,1,0};
+        int c[]={0,-1,0,1};
+        
+        for(int i=0;i < 4;i++){
+            int nrow=row+r[i];
+            int ncol=col+c[i];
+            
+            if(nrow >= 0 && nrow < n && ncol >= 0 && ncol < m && !vis[nrow][ncol] && grid[nrow][ncol] == '1'){
+                DFS(nrow,ncol,grid,vis);
+            }
+        }
+    }
+    int numIslands(vector<vector<char>>& grid) {
+
+        int n=grid.size();
+        int m=grid[0].size();
+        int island=0;
+        vector<vector<int>>vis(n,vector<int>(m,0));
+        
+        for(int i=0;i < n;i++){
+            for(int j=0;j < m;j++){
+                if(!vis[i][j] && grid[i][j] == '1'){
+                    DFS(i,j,grid,vis);    
+                    island++;
+                }
+            }
+        }
+        return island;
+    }
+};
