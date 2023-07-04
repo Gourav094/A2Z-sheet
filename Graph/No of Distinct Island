@@ -1,70 +1,58 @@
-https://leetcode.com/problems/number-of-islands/solutions/3716797/number-of-distinct-island-solution-explained/
-
-# Intuition
-<!-- Describe your first thoughts on how to solve this problem. -->
+Intuition
 we need to find the number of island but all should be different .
 So idea to to store their shape in set and return its size.
-but how to shore shape ?? 
+but how to shore shape ??
 we can store all indices of the shape in a vector and then in set.
+NOTE:
+take a base row col to first node
+subtract all indices to this base to ignore identical islands
 
-**NOTE**:
-take a base row col to first node 
-subtract all indices to this base to ignore identical islands 
-
-# Approach
-<!-- Describe your approach to solving the problem. -->
+Approach
 Lets solve using DFS.
-1. we need to find the shape for evry island using DFS and store in s .
-    So traverse matrix and take unvisited islands 
-2.  DFS: this gonna store all shapes in vector
-    - store ans by substracting base from cur row index. Then
-    - find all island connected with cur row and col in all four direction
-    - call dfs for each node
-    
 
-
-# Code
-```
-class Solution {
-public:
-
-    void mark_curr_island(vector<vector<char>> &grid, int x,int y, int r, int c){
-
-        if(x<0 || x>=r || y<0 || y>=c || grid[x][y] != '1')
-            return;
-
-        grid[x][y] = '2';
-
-        mark_curr_island(grid,x+1,y,r,c); // Makes Recursive Call Downwards;
-        mark_curr_island(grid,x,y+1,r,c); // Makes Recursive Call Rightwards;
-        mark_curr_island(grid,x-1,y,r,c); // Makes Recursive Call to top;
-        mark_curr_island(grid,x,y-1,r,c); // Makes Recursive Call to left;
-
+we need to find the shape for evry island using DFS and store in s .
+So traverse matrix and take unvisited islands
+DFS: this gonna store all shapes in vector
+store ans by substracting base from cur row index. Then
+find all island connected with cur row and col in all four direction
+call dfs for each node
+Code
+void DFS(int row,int col,vector<vector<int>>& grid,vector<vector<int>>&vis,vector<pair<int,int>>&v,int row0,int col0){
+        
+        vis[row][col]=1;
+        v.push_back({row-row0,col-col0});
+        
+        int n=grid.size();
+        int m=grid[0].size();
+        
+        int r[]={-1,0,1,0};
+        int c[]={0,-1,0,1};
+        
+        for(int i=0;i < 4;i++){
+            int nrow=row+r[i];
+            int ncol=col+c[i];
+            
+            if(nrow >= 0 && nrow < n && ncol >= 0 && ncol < m && !vis[nrow][ncol] && grid[nrow][ncol] == 1){
+                DFS(nrow,ncol,grid,vis,v,row0,col0);
+            }
+        }
     }
-
-
-    int numIslands(vector<vector<char>>& grid) {
-
-        int rows = grid.size();
-
-        if(rows == 0)
-            return 0;
-
-        int columns = grid[0].size();
-
-        int numberOfIslands = 0;
-
-        for(int i=0;i<rows;i++){
-            for(int j=0;j<columns;j++){
-                if(grid[i][j] == '1'){
-
-                    mark_curr_island(grid,i,j,rows,columns);
-                    numberOfIslands ++;
-
+    
+    int countDistinctIslands(vector<vector<int>>& grid) {
+        // code here
+        int n=grid.size();
+        int m=grid[0].size();
+        set<vector<pair<int,int>>>s;
+        vector<vector<int>>vis(n,vector<int>(m,0));
+        
+        for(int i=0;i < n;i++){
+            for(int j=0;j < m;j++){
+                if(!vis[i][j] && grid[i][j] == 1){
+                    vector<pair<int,int>>v;
+                    DFS(i,j,grid,vis,v,i,j);    
+                    s.insert(v);
                 }
             }
         }
-        return numberOfIslands;
+        return s.size();
     }
-};
-```
