@@ -1,0 +1,42 @@
+Let's take an example:
+
+3 1 1 1 2 2 2
+
+From the above example it is clear that 3 is the answer. Now, let us look at the binary representation of the numbers.
+
+3 ----> 0 0 1 1
+1 ----> 0 0 0 1
+1 ----> 0 0 0 1
+1 ----> 0 0 0 1
+2 ----> 0 0 1 0
+2 ----> 0 0 1 0
+2 ----> 0 0 1 0
+
+If you notice in the above table, numbers of ones in some columns are in the form 3n and 3n+1, where n is the frequency of the numbers.
+Whichever columns have 3n+1 1's must contain the element that occurs only once and thats what we want as the result.
+So, we check for every bit in the whole array and if the count of that bit is in the form 3n+1 then we add it to our result.
+
+Code
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int ans=0;
+    //Lets check for every bit 
+        for(int i=0;i <= 31;i++){
+            int count=0;
+    //chech one at ith place by taking '&' with one at ith
+            int check=(1 << i);
+    //for every element if there is one then increment count
+            for(auto num:nums){
+                if(num & check){
+                    count += 1;
+                }
+    // if count is not multiple of 3 then make the bit is set bit
+            }
+            if(count % 3){
+                ans = ans | check;
+            }
+        }
+        return ans;
+    }
+};
