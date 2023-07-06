@@ -1,3 +1,4 @@
+using BFS / DFS: 
 Intuition :
 We need to color nodes such that no two adjacent node can have same color
 use color array with two colors 0 and 1
@@ -6,7 +7,7 @@ steps:
 2. now for every node , color the adjacent node with opp color only if they are not colored before
 3. if they are color and their color mathes with cur node then return false.
 
-
+BFS : 
 Class Solution {
     
     bool BFS(int src,vector<int>adj[],vector<int>& color){
@@ -43,3 +44,24 @@ public:
 	}
 
 };
+
+
+// using DFS
+
+// bool DFS(int cur, vector<vector<int>>&g, vector<int>&color) 
+    // {
+    //     if(color[cur]==-1) color[cur] = 1;
+        
+    //     for(auto &nbr : g[cur])
+    //     {
+    //         if(color[nbr]==-1)
+    //         {
+    //             color[nbr] = 1-color[cur];
+    //             if(DFS(nbr,g,color)==false)
+    //                 return false;
+    //         }
+    //         else if(color[nbr] == color[cur])
+    //             return false;
+    //     }
+    //     return true;
+    // }
