@@ -1,0 +1,45 @@
+Intuition :
+We need to color nodes such that no two adjacent node can have same color
+use color array with two colors 0 and 1
+steps:
+1. start with first node as color 0 
+2. now for every node , color the adjacent node with opp color only if they are not colored before
+3. if they are color and their color mathes with cur node then return false.
+
+
+Class Solution {
+    
+    bool BFS(int src,vector<int>adj[],vector<int>& color){
+        queue<int>q;
+        q.push(src);
+        color[src]=0;
+        while(!q.empty()){
+            int node=q.front();
+            q.pop();
+            for(auto it : adj[node]){
+                if(color[it] == -1){
+                    color[it] = !color[node];
+                    q.push(it);
+                }
+                else if(color[it] == color[node]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+public:
+	bool isBipartite(int V, vector<int>adj[]){
+	    // Code here
+	    vector<int>color(V,-1);
+	    for(int i=0;i < V;i++){
+	        if(color[i] == -1){
+	            if(BFS(i,adj,color) == false){
+	                return false;
+	            }
+	        }
+	    }
+	    return true;
+	}
+
+};
