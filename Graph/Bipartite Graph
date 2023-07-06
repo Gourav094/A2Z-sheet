@@ -48,20 +48,17 @@ public:
 
 // using DFS
 
-// bool DFS(int cur, vector<vector<int>>&g, vector<int>&color) 
-    // {
-    //     if(color[cur]==-1) color[cur] = 1;
-        
-    //     for(auto &nbr : g[cur])
-    //     {
-    //         if(color[nbr]==-1)
-    //         {
-    //             color[nbr] = 1-color[cur];
-    //             if(DFS(nbr,g,color)==false)
-    //                 return false;
-    //         }
-    //         else if(color[nbr] == color[cur])
-    //             return false;
-    //     }
-    //     return true;
-    // }
+bool DFS(int src,int col,vector<vector<int>>& graph,vector<int>& color){
+        color[src]=col;
+        for(auto it : graph[src]){
+            if(color[it] == -1){
+                if(DFS(it,!col,graph,color) == false){
+                    return false;
+                }
+            }
+            else if(color[it] == col){
+                return false;
+            }
+        }
+        return true;
+    }
