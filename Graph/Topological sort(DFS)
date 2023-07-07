@@ -1,0 +1,32 @@
+Just traverse the whole graph using Dfs and store it in stack so that get in reverse order 
+class Solution
+{
+    void DFS(int node,vector<int>adj[],stack<int>& s,vector<int>& vis){
+        vis[node]=1;
+        for(int it:adj[node]){
+            if(!vis[it]){
+                DFS(it,adj,s,vis);
+            }
+        }
+        s.push(node);
+    }
+	public:
+	//Function to return list containing vertices in Topological order. 
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    // code here
+	    vector<int>ans;
+	    stack<int>s;
+	    vector<int>vis(V,0);
+	    for(int i=0;i < V;i++){
+	        if(!vis[i]){
+	            DFS(i,adj,s,vis);
+	        }
+	    }
+	    while(!s.empty()){
+	        ans.push_back(s.top());
+	        s.pop();
+	    }
+	    return ans;
+	}
+};
