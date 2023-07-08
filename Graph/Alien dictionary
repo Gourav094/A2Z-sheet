@@ -1,0 +1,68 @@
+Steps:
+
+1. Compare two string and find the differentiating factor on which they are in the order
+e.g--> 
+abc
+bdg
+here abc comes first means a come before b then make a node 
+
+2. after making these as a directed graph traverse topologic sort that gives a correct order 
+3. return 
+class Solution{
+    
+    vector<int> topoSort(int V, vector<int> adj[]){
+	// code here
+	    vector<int>indegree(V,0);
+	    for(int i=0;i < V;i++){
+            for(auto node:adj[i]){
+                indegree[node]++;
+            }
+	    }
+	    
+	    queue<int>q;
+	    for(int i=0;i < V;i++){
+	        if(indegree[i] == 0){
+	            q.push(i);
+	        }
+	    }
+	    vector<int>ans;
+	    while(!q.empty()){
+	        int node=q.front();
+	        q.pop();
+	        ans.push_back(node);
+	        for(auto it : adj[node] ){
+	            indegree[it]--;
+	            if(indegree[it] == 0){
+	                q.push(it);
+	            }
+	        }
+	    }
+	    return ans;
+	}
+    
+    public:
+    string findOrder(string dict[], int N, int K) {
+        //code here
+        vector<int>adj[K];
+        
+        for(int i=0;i < N-1;i++){
+            string s1=dict[i];
+            string s2=dict[i+1];
+            
+            int mini=min(s1.length(),s2.length());
+            for(int i=0;i < mini;i++){
+                if(s1[i] != s2[i]){
+                    adj[s1[i] - 'a'].push_back(s2[i] - 'a');
+                    break;
+                }
+            }
+        }
+        
+        vector<int> v=topoSort(K,adj);
+        string ans="";
+        for(auto it : v){
+            ans=ans + char(it + 'a');
+        }
+        return ans;
+    }
+};
