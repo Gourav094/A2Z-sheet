@@ -1,0 +1,56 @@
+Intuition
+Here we need number of enclaves means no of 1 that cant reach to boudary.
+So find all the cell with one that can reach to end and make them visited and traverse also connected cells also
+
+Approach
+Find all the cells with one at boundary and push into queue and make them visited.
+while queue=> traverse all direction of a cell whose value is zero and not visted yt.
+store count of cells that cant react to end
+Code
+class Solution {
+public:
+    int numEnclaves(vector<vector<int>>& grid) {
+        int ans=0;
+        int n=grid.size();
+        int m=grid[0].size();
+
+        vector<vector<int>>vis(n,vector<int>(m,0));
+        queue<pair<int,int>>q;
+    // figure our boudary elements
+        for(int i=0;i < n;i++){
+            for(int j=0;j < m;j++){
+                if(i == 0 || j == 0 || i == n-1 || j == m-1){
+                    if(grid[i][j] == 1){
+                        q.push({i,j});
+                        vis[i][j]=1;
+                    }
+                }
+            }
+        }
+    //traverse each connected cells with one 
+        int r[] = {-1,0,1,0};
+        int c[] = {0,1,0,-1};
+        while(!q.empty()){
+            int row = q.front().first;
+            int col = q.front().second;
+            q.pop();
+            for(int i=0;i < 4;i++){
+                int nrow = r[i] + row;
+                int ncol= c[i] + col;
+                if(nrow >= 0 && nrow < n && ncol >= 0 && ncol < m && grid[nrow][ncol] == 1 && vis[nrow][ncol] == 0){
+                    q.push({nrow,ncol});
+                    vis[nrow][ncol]=1;
+                }
+            }
+        }
+    // store count of cells that cant react to end
+        for(int i=0;i < n;i++){
+            for(int j=0; j < m;j++){
+                if(grid[i][j] == 1 && vis[i][j] == 0){
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+};
