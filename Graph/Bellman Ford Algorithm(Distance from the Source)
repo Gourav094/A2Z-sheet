@@ -1,0 +1,36 @@
+The intuition is to relax all the edges for N-1( N = no. of nodes) times sequentially. 
+After N-1 iterations, we should have minimized the distance to every node.
+
+for dry run :
+https://takeuforward.org/data-structure/bellman-ford-algorithm-g-41/
+NOTE:
+if a graph contain negative cycle its going decreasing weight 
+since this algo says for a graph we need N-1 iteration to reduce but if there occur decrease in N iteration 
+then this means there is negative cycle. 
+
+vector<int> bellman_ford(int V, vector<vector<int>>& edges, int src) {
+        // Code here
+        vector<int>dist(V,1e8);
+        dist[src]=0;
+//Relax every node n-1 th time
+        for(int i=0;i < V-1;i++){
+            for(auto it:edges){
+                int u =it[0];
+                int v=it[1];
+                int wt=it[2];
+                if(dist[u] + wt < dist[v]){
+                    dist[v] = dist[u] + wt;
+                }
+            }
+        }
+// check if node relax on nth iteration means there is -ve cycle
+        for(auto it :edges){
+            int u =it[0];
+            int v=it[1];
+            int wt=it[2];
+            if(dist[u] + wt < dist[v]){
+                return {-1};
+            }
+        }
+        return dist;
+    }
