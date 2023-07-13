@@ -1,0 +1,44 @@
+Its a shortest path finding algorithm that includes multipath 
+Steps:
+1. set matrix[i][j] to big value, if get -1 bcoz -1, means no connection exits
+   and if i and j are equal then set to zero bcoz cost to itself is zero
+2. find the cost via each node but how
+cost from each node will be minimum of its  cost to cost via path ==>  i.e cost[I][j] = min (cost[I][j] , cost[I][k]+ cost[k][j])
+3. if there is a big value set it to -1 
+
+code: 
+class Solution {
+  public:
+	void shortest_distance(vector<vector<int>>&matrix){
+	    // Code here
+	    int n=matrix.size();
+	    for(int i=0;i < n;i++){
+	        for(int j=0;j < n;j++){
+	            
+	            if(matrix[i][j] == -1){
+	                matrix[i][j] = 1e9;
+	            }
+	            
+	            if(i == j){
+	                matrix[i][j] = 0;
+	            }
+	        }
+	    }
+	    
+	    for(int k=0;k < n;k++){
+	        for(int i=0;i < n;i++){
+	            for(int j=0;j < n;j++){
+	                matrix[i][j] = min(matrix[i][j],matrix[i][k] + matrix[k][j]);
+	            }
+	        }
+	    }
+	    
+	    for(int i=0;i < n;i++){
+	        for(int j=0;j < n;j++){
+	            if(matrix[i][j] == 1e9){
+	                matrix[i][j] = -1;
+	            }
+	        }
+	    }
+	}
+};
