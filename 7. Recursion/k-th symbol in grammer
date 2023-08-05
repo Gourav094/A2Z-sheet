@@ -1,0 +1,46 @@
+# Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Lets understand the question:
+0->01    and 1->10
+n=1 0
+n=2 0 1   
+n=3 0 1 1 0
+n=4 0 1 1 0 1 0 0 1
+
+Here we can observe that for finding n =>
+if k < mid then value will be same as n-1
+but if k > mid then value will be transpose of n-1
+# Approach
+<!-- Describe your approach to solving the problem. -->
+For solving using recursion we can divide into parts
+B.C --> n==1 && k == 1 ==> return 0
+I.C --> solve(n,k) ==> solve(n-1,?)
+bcoz cant be k-1 bcoz size of previous is half then may go out of bound
+So, lets take help of observation
+```
+if( k < mid ) ==> solve (n-1,k)     
+```
+bcoz its similar to previous 
+```
+else !solve(n-1,k-mid)
+```
+just take transpose of mid at same position
+
+Note: if still have doudt then dry run with this logic on paper.
+# Code
+```
+class Solution {
+public:
+    int kthGrammar(int n, int k) {
+        if(n==1 && k==1){
+            return 0;
+        }
+        int len=pow(2,n-1);
+        int mid=len/2;
+        if(k <= mid){
+            return kthGrammar(n-1,k);
+        }
+        else return !kthGrammar(n-1,k-mid);
+    }
+};
+```
