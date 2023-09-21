@@ -1,0 +1,53 @@
+Intution:
+find search space and allocate pages to student 
+
+finding search space:
+case1: see we can give minimum one book to a student means maximum pages will be our ans surely
+case2: if we have 1 student and 4 pages then we can give sum of all pages to a student means find upto their sum
+
+approach:
+1. from their maximum to their sum start binary search to find the optimal ans 
+2. count students that are allocated pages
+count student:
+give arr[I] pages to a student if its less than our mid otherwise allocate to another student
+
+3. if count < m ( given student) then we can go back to find optimal ans i.e high = mid-1;
+4. otherwise go forward i.e low = mid + 1
+
+int count(vector<int>& arr,int mid){
+    int students = 0;
+    int pages = 0;
+    for(int i = 0;i < arr.size();i++){
+    //add pages to current student 
+        if(pages + arr[i] <= mid){
+            pages += arr[i];
+        }
+    //add pages to next student
+        else{
+            students++;
+            pages = arr[i];
+        }
+    }
+    return students;
+}
+int findPages(vector<int>& arr, int n, int m) {
+    // Write your code here.
+    if(m > n){
+        return -1;
+    }
+    int low = *max_element(arr.begin(),arr.end());
+    int high = accumulate(arr.begin(),arr.end(),0);
+
+    while(low <= high){
+        int mid = low + (high-low)/2;
+  //find allocated pages to student
+        int student = count(arr,mid);
+  // if count is less than student optimised the ans
+        if(student < m){
+            high = mid-1;
+        }
+  // otherwise move forward
+        else low = mid+1;
+    }   
+    return low;
+}
